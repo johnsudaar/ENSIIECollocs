@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Titre:
+  = @colloc.titre
+%p
+  %b Adresse:
+  = @colloc.adresse
+%p
+  %b Size:
+  = @colloc.size
+%p
+  %b Places:
+  = @colloc.places
+%p
+  %b Max people:
+  = @colloc.max_people
+%p
+  %b Price:
+  = @colloc.price
+
+= link_to 'Edit', edit_colloc_path(@colloc)
+\|
+= link_to 'Back', collocs_path

@@ -1,0 +1,31 @@
+%h1 Listing collocs
+
+%table
+  %thead
+    %tr
+      %th Titre
+      %th Adresse
+      %th Size
+      %th Places
+      %th Max people
+      %th Price
+      %th
+      %th
+      %th
+
+  %tbody
+    - @collocs.each do |colloc|
+      %tr
+        %td= colloc.titre
+        %td= colloc.adresse
+        %td= colloc.size
+        %td= colloc.places
+        %td= colloc.max_people
+        %td= colloc.price
+        %td= link_to 'Show', colloc
+        %td= link_to 'Edit', edit_colloc_path(colloc)
+        %td= link_to 'Destroy', colloc, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Colloc', new_colloc_path
