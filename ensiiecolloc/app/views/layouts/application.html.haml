@@ -1,0 +1,70 @@
+!!!
+%html
+  %head
+    %title ENSIIE Colloc
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    .page-header
+      %h1.titre ENSIIE'Colloc
+    %nav.top-bar{"data-topbar" => "", :role => "navigation"}
+      %ul.title-area
+        %li.name
+          %h1
+            %a{:href => "#"} My Site
+        / Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+        %li.toggle-topbar.menu-icon
+          %a{:href => "#"}
+            %span Menu
+      %section.top-bar-section
+        / Right Nav Section
+        %ul.right
+          %li.active
+            %a{:href => "#"} Right Button Active
+          %li.has-dropdown
+            %a{:href => "#"} Right Button Dropdown
+            %ul.dropdown
+              %li
+                %a{:href => "#"} First link in dropdown
+              %li.active
+                %a{:href => "#"} Active link in dropdown
+        / Left Nav Section
+        %ul.left
+          %li
+            %a{:href => "#"} Left Nav Button
+    %br
+    .icon-bar.six-up
+      %ul.title-area
+        %li.name
+          %h1
+            %a{:href => "#"} My Site
+      %a.item{:href => "#"} 
+        %label
+          ENSIIE'Colloc
+      %a.item{:href => "#"}
+        %i.fi-home
+        %label
+          Home
+      %a.item
+        %i.fi-bookmark
+        %label
+          Bookmark
+      %a.item
+        %i.fi-info
+        %label        
+          Info
+      %a.item
+        %i.fi-mail
+        %label
+          Mail
+      %a.item
+        %i.fi-like
+        %label
+          Like
+    %br
+    = yield
+    %section.tldr
+      %footer.footer
+        .container
+          %p.text-muted © Site créé par Ara~Sudaar
