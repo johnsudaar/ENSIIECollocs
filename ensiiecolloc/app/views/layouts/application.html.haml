@@ -9,39 +9,30 @@
     %nav.top-bar{"data-topbar" => "", :role => "navigation"}
       %ul.title-area
         %li.name
-          %h1.header
-            %img{:href => "#", :src => "http://i.imgur.com/nFrbvCS.png", :height => "55px", :width => "55px"}
-            ENSIIE'Colloc
-            //%a{:href => "#"} ENSIIE'Colloc
-        / Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+          = link_to root_path, {class:"menu-title-link"} do
+            %img#logo-ensiie{:href => "#", :src => asset_path("ensiie.png")}
+            %h1.menu-title ENSIIE'Colloc
         %li.toggle-topbar.menu-icon
           %a{:href => "#"}
             %span Menu
       %section.top-bar-section
-        / Right Nav Section
         %ul.right
-          %li.active
-            %a{:href => "#"} Home
-
-          %li
-            %a{:href => "#"} Map
-          %li
-            %a{:href => "#"} Collocs
-          %li
-            %a{:href => "#"} Info        
-            %ul.dropdown
-              %li
-                %a{:href => "#"} First link in dropdown
-              %li.active
-                %a{:href => "#"} Active link in dropdown
-        / Left Nav Section
-        %ul.left
-          %li
-            %a{:href => "#"} Log In
+          - if user_signed_in?
+            %li
+              %a{:href => "#"} Map
+            %li
+              %a{:href => "#"} Collocs
+            %li
+              %a{:href => "#"} Info
+          - else
+            %li
+              %a{"aria-controls" => "login_drop_down", "aria-expanded" => "false", "data-dropdown" => "login_drop_down"} Login
+              #login_drop_down.f-dropdown.content{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+                = render :template => "devise/sessions/new"
     %br
     %br
     = yield
     %section.tldr
       %footer.footer
         .container
-          %p.text-muted © Site créé par Ara~Sudaar
+          %p.text-muted © Site créé par Ara et Johnsudaar
