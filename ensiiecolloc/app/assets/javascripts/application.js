@@ -39,10 +39,10 @@ toastr.options = {
 $(function(){ $(document).foundation(); });
 
 $(function (){
-        $("#new_user").submit(function(event){
+        $("#connexion_user").submit(function(event){
                 event.preventDefault();
-                var email = $("#user_email").val();
-                var password = $("#user_password").val();
+                var email = $("#connexion_user").find("#user_email").val();
+                var password = $("#connexion_user").find("#user_password").val();
                 $.post(login_post_url, {email: email, password: password}).done(function(data){
                         if(data.type =="error"){
                           toastr.error(data.message, "Erreur");
@@ -50,9 +50,5 @@ $(function (){
                           window.location.replace(home_url);
                         }
                 }, "json");
-        });
-
-        $("#close-login").click(function(event){
-                $("#alert-login").hide(300);
         });
 });
