@@ -16,5 +16,43 @@
 //= require foundation
 //= require turbolinks
 //= require_tree .
+//= require toastr
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-bottom-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+};
 
 $(function(){ $(document).foundation(); });
+
+$(function (){
+        $("#new_user").submit(function(event){
+                event.preventDefault();
+                var email = $("#user_email").val();
+                var password = $("#user_password").val();
+                $.post(login_post_url, {email: email, password: password}).done(function(data){
+                        if(data.type =="error"){
+                          toastr.error(data.message, "Erreur");
+                        }else{
+                          window.location.replace(home_url);
+                        }
+                }, "json");
+        });
+
+        $("#close-login").click(function(event){
+                $("#alert-login").hide(300);
+        });
+});

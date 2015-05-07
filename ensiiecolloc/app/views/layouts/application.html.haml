@@ -5,6 +5,9 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    :javascript
+      login_post_url = "#{json_login_path}";
+      home_url = "#{root_path}";
   %body
     %nav.top-bar{"data-topbar" => "", :role => "navigation"}
       %ul.title-area
@@ -24,6 +27,8 @@
               %a{:href => "#"} Collocs
             %li
               %a{:href => "#"} Info
+            %li
+              = link_to "Deconnexion", destroy_user_session_path, method: :delete
           - else
             %li
               %a{"aria-controls" => "login_drop_down", "aria-expanded" => "false", "data-dropdown" => "login_drop_down"} Login
@@ -31,8 +36,15 @@
                 = render :template => "devise/sessions/new"
     %br
     %br
-    = yield
+    .container
+      = yield
     %section.tldr
       %footer.footer
         .container
           %p.text-muted © Site créé par Ara et Johnsudaar
+    - if flash[:notice]
+      :javascript
+        toastr.success("#{flash[:notice]}")
+    - if flash[:error]
+      :javascript
+        toastr.error("#{flash[:error]}")
