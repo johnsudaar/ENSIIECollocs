@@ -1,0 +1,28 @@
+%h1 Administration des utilisateurs
+
+%table.full-width.responsive
+  %thead
+    %tr
+      %th.center-text E-mail
+      %th.center-text Nom
+      %th.center-text Prénom
+      %th.center-text Activation
+      %th.center-text Administration
+  %tbody
+    - @users.each() do |user|
+      %tr
+        %td.center-text #{user.email}
+        %td.center-text #{user.surname}
+        %td.center-text #{user.name}
+        %td.center-text
+          = link_to administration_activation_path(user), {class: "button success tiny expand no-margin"} do
+            - if user.approved?
+              Desactiver
+            - else
+              Activer
+        %td.center-text
+          = link_to administration_set_admin_path(user), {class: "button success tiny expand no-margin"} do
+            - if user.admin?
+              Passer utilisateur
+            - else
+              Passer administrateur

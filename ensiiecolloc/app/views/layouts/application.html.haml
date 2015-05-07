@@ -27,6 +27,9 @@
               %a{:href => "#"} Collocs
             %li
               %a{:href => "#"} Info
+            - if current_user.admin?
+              %li{:class => ("active" unless ! current_page?(administration_users_path))}
+                = link_to "Administration", administration_users_path
             %li
               = link_to "Deconnexion", destroy_user_session_path, method: :delete
           - else

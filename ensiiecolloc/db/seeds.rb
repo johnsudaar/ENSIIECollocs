@@ -14,6 +14,7 @@ u1.phone = "0123456789"
 u1.email = "test@test.tld"
 u1.password = "john1234"
 u1.approved = true
+u1.admin = true
 u1.save!
 
 u2 = User.new
