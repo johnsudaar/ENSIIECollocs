@@ -29,7 +29,7 @@
             %li
               %a{:href => "#"} Info
             - if current_user.colloc.nil?
-              %li
+              %li{:class => ("active" unless ! current_page?(new_colloc_path))}
                 = link_to "Créer une colloc", new_colloc_path
             -else
               %li

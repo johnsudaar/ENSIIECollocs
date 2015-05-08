@@ -19,6 +19,24 @@
   %b Price:
   = @colloc.price
 
+#google-map
+
+:javascript
+  locations = Array();
+  loc = Object();
+  loc.id = #{@colloc.id};
+  loc.lat = #{@colloc.latitude};
+  loc.long = #{@colloc.longitude};
+  loc.price = #{@colloc.price};
+  loc.max_people = #{@colloc.max_people};
+  loc.name = "#{@colloc.titre}";
+  loc.path = "#{colloc_path(@colloc.id)}"
+  locations.push(loc);
+  $(function(){
+    initMap();
+    placeAllPoints();
+  });
+
 = link_to 'Edit', edit_colloc_path(@colloc)
 \|
 = link_to 'Back', collocs_path
