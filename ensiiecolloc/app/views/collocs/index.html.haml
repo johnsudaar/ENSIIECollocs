@@ -1,31 +1,34 @@
 %h1 Listing collocs
+:javascript
+  locations = Array();
 
-%table
-  %thead
-    %tr
-      %th Titre
-      %th Adresse
-      %th Size
-      %th Places
-      %th Max people
-      %th Price
-      %th
-      %th
-      %th
 
-  %tbody
-    - @collocs.each do |colloc|
-      %tr
-        %td= colloc.titre
-        %td= colloc.adresse
-        %td= colloc.size
-        %td= colloc.places
-        %td= colloc.max_people
-        %td= colloc.price
-        %td= link_to 'Show', colloc
-        %td= link_to 'Edit', edit_colloc_path(colloc)
-        %td= link_to 'Destroy', colloc, :method => :delete, :data => { :confirm => 'Are you sure?' }
+.row#list-collocs
+  #google-map.small-12
+- @collocs.each do |colloc|
+  .small-12.medium-6.column
+    %ul.pricing-table
+      %li.title #{colloc.titre}
+      %li.price #{colloc.price} €/mois
+      %li.description #{colloc.adresse}
+      %li.bullet-item #{colloc.size} m²
+      %li.bullet-item #{colloc.chambres} chambres
+      %li.bullet-item Pour #{colloc.max_people} personnes max
+      %li.cta-button
+        = link_to "Voir", colloc, {:class=> "button white-text"}
+  :javascript
+    loc = Object();
+    loc.id = #{colloc.id};
+    loc.lat = #{colloc.latitude};
+    loc.long = #{colloc.longitude};
+    loc.price = #{colloc.price};
+    loc.max_people = #{colloc.max_people};
+    loc.name = "#{colloc.titre}";
+    loc.path = "#{colloc_path(colloc.id)}"
+    locations.push(loc);
 
-%br
-
-= link_to 'New Colloc', new_colloc_path
+:javascript
+  $(function(){
+    initMap();
+    placeAllPoints();
+  });

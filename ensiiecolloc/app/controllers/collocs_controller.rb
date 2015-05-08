@@ -25,7 +25,11 @@ class CollocsController < ApplicationController
   # POST /collocs
   # POST /collocs.json
   def create
+    p "======================="
+    p colloc_params;
+    p "======================="
     @colloc = Colloc.new(colloc_params)
+    @colloc.user_id = current_user.id
 
     respond_to do |format|
       if @colloc.save

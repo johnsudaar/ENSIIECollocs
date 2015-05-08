@@ -1,14 +1,8 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
-// You can use CoffeeScript in this file: http://coffeescript.org/
-// /= require geocomplete
-$( function(){
-  $(".form_colloc").find("#colloc_adresse").geocomplete();
+$(function(){
+  new google.maps.places.Autocomplete($("#colloc_adresse")[0]);
 });
 
-
 function placeAllPoints(){
-  console.log(locations.length);
   for(i=0; i<locations.length; i++) {
     placePoint(locations[i]);
   }

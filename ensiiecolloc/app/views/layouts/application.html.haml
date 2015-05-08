@@ -24,16 +24,16 @@
           - if user_signed_in?
             %li
               %a{:href => "#"} Map
-            %li
-              %a{:href => "#"} Collocs
+            %li{:class => ("active" unless ! current_page?(collocs_path))}
+              = link_to "Collocs", collocs_path
             %li
               %a{:href => "#"} Info
             - if current_user.colloc.nil?
               %li{:class => ("active" unless ! current_page?(new_colloc_path))}
                 = link_to "Créer une colloc", new_colloc_path
             -else
-              %li
-                = link_to "Gérer ma colloc","#"
+              %li{:class => ("active" unless !current_page?(colloc_path(current_user.colloc.id)))}
+                = link_to "Gérer ma colloc",colloc_path(current_user.colloc.id)
             - if current_user.admin?
               %li{:class => ("active" unless ! current_page?(administration_users_path))}
                 = link_to "Administration", administration_users_path

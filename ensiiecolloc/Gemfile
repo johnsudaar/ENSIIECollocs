@@ -28,7 +28,6 @@ gem 'haml-rails'
 gem 'foundation-rails'
 gem 'foundation_rails_helper'
 gem 'toastr-rails'
-gem 'geocomplete_rails'
 gem 'geocoder'
 
 
