@@ -70,6 +70,6 @@ class CollocsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def colloc_params
-      params.require(:colloc).permit(:titre, :adresse, :size, :places, :max_people, :price)
+      params.require(:colloc).permit(:titre, :adresse, :size, :chambres, :max_people, :price)
     end
 end

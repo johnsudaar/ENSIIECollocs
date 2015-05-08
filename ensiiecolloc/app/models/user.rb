@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
   validates :surname, presence: true
   validates :phone, presence:true
   validates :promo, presence:true
-  
+  has_one :colloc
+
   def active_for_authentication?
     super && approved?
   end
