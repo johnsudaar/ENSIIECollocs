@@ -33,9 +33,11 @@ function placePoint(p){
   var infoWindow = new google.maps.InfoWindow({
     content:content_string
   });
+  var icon = "<%= asset_path 'marker.png' %>"
   var marker = new google.maps.Marker({
     position: lat_ln,
     map: map,
+    icon: icon,
     title: p.name
   });
 
