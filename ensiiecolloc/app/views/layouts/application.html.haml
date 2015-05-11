@@ -50,16 +50,16 @@
             %li.hide-for-large-up{:class => ("active" unless ! current_page?(new_user_session_path))}
               = link_to "Connexion", new_user_session_path
     .container
-      / ---------------------------------------------------------------------------------------------------------------------------------
-      = yield
-      / ---------------------------------------------------------------------------------------------------------------------------------
-    %section.tldr
-      %footer.footer
-        .container
-          %p.text-muted © Site créé par Ara et Johnsudaar
-    - if flash[:notice]
-      :javascript
-        toastr.success("#{flash[:notice]}")
-    - if flash[:error]
-      :javascript
-        toastr.error("#{flash[:error]}")
+      %div
+        / ---------------------------------------------------------------------------------------------------------------------------------
+        = yield
+        / ---------------------------------------------------------------------------------------------------------------------------------
+      %section.tldr
+        %footer.footer.text-center
+          %small.text-muted © Site créé par Ara et Johnsudaar
+      - if flash[:notice]
+        :javascript
+          toastr.success("#{flash[:notice]}")
+      - if flash[:error]
+        :javascript
+          toastr.error("#{flash[:error]}")
