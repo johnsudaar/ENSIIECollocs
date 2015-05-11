@@ -5,7 +5,7 @@ class CollocsController < ApplicationController
   # GET /collocs
   # GET /collocs.json
   def index
-    @collocs = Colloc.all
+    @collocs = Colloc.paginate(:page => params[:page], :per_page => 6)
   end
 
   # GET /collocs/1
@@ -25,9 +25,6 @@ class CollocsController < ApplicationController
   # POST /collocs
   # POST /collocs.json
   def create
-    p "======================="
-    p colloc_params;
-    p "======================="
     @colloc = Colloc.new(colloc_params)
     @colloc.user_id = current_user.id
 

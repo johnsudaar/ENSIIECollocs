@@ -15,8 +15,6 @@ function initMap(){
   }
 
   var center = bounds.getCenter();
-  console.log(center);
-
   var mapOptions = {
     center:center,
     zoom:13
@@ -44,5 +42,4 @@ function placePoint(p){
   google.maps.event.addListener(marker,'click',function(){
     infoWindow.open(map,marker)
   });
-  console.log("On place "+p.name+" ("+p.lat+","+p.long+")")
 }

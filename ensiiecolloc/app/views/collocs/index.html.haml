@@ -2,30 +2,33 @@
 :javascript
   locations = Array();
 
-
 .row#list-collocs
   #google-map.small-12
-- @collocs.each do |colloc|
-  .small-12.medium-6.column
-    %ul.pricing-table
-      %li.title #{colloc.titre}
-      %li.price #{colloc.price} €/mois
-      %li.description #{colloc.adresse}
-      %li.bullet-item #{colloc.size} m²
-      %li.bullet-item #{colloc.chambres} chambres
-      %li.bullet-item Pour #{colloc.max_people} personnes max
-      %li.cta-button
-        = link_to "Voir", colloc, {:class=> "button white-text"}
-  :javascript
-    loc = Object();
-    loc.id = #{colloc.id};
-    loc.lat = #{colloc.latitude};
-    loc.long = #{colloc.longitude};
-    loc.price = #{colloc.price};
-    loc.max_people = #{colloc.max_people};
-    loc.name = "#{colloc.titre}";
-    loc.path = "#{colloc_path(colloc.id)}"
-    locations.push(loc);
+  .pagination_container.small-12
+    = will_paginate @collocs, renderer: FoundationPagination::Rails
+  - @collocs.each do |colloc|
+    .small-12.medium-4.column
+      %ul.pricing-table
+        %li.title #{colloc.titre}
+        %li.price #{colloc.price} €/mois
+        %li.description #{colloc.adresse}
+        %li.bullet-item #{colloc.size} m²
+        %li.bullet-item #{colloc.chambres} chambres
+        %li.bullet-item Pour #{colloc.max_people} personnes max
+        %li.cta-button
+          = link_to "Voir", colloc, {:class=> "button white-text"}
+        :javascript
+          loc = Object();
+          loc.id = #{colloc.id};
+          loc.lat = #{colloc.latitude};
+          loc.long = #{colloc.longitude};
+          loc.price = #{colloc.price};
+          loc.max_people = #{colloc.max_people};
+          loc.name = "#{colloc.titre}";
+          loc.path = "#{colloc_path(colloc.id)}"
+          locations.push(loc);
+  .pagination_container.small-12.end.columns
+    = will_paginate @collocs, renderer: FoundationPagination::Rails
 
 :javascript
   $(function(){

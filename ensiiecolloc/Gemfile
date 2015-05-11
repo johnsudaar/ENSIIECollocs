@@ -29,6 +29,8 @@ gem 'foundation-rails'
 gem 'foundation_rails_helper'
 gem 'toastr-rails'
 gem 'geocoder'
+gem 'will_paginate', '~> 3.0.6'
+gem 'will_paginate-foundation'
 
 
 # Use ActiveModel has_secure_password
