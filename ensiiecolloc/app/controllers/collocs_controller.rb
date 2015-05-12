@@ -24,9 +24,7 @@ class CollocsController < ApplicationController
   end
 
   def addpic
-    i=0
     params[:colloc][:files].each do |file|
-      i = i+1
       pic = Picture.new
       up = PictureUploader.new
       up.store!(file)
@@ -35,8 +33,6 @@ class CollocsController < ApplicationController
       pic.thumb = up.thumb.url
       pic.save
     end
-    flash[:notice] = i.to_s+" photos ajoutées"
-    redirect_to @colloc
   end
 
   def delpic
@@ -50,7 +46,7 @@ class CollocsController < ApplicationController
 
     respond_to do |format|
       if @colloc.save
-        format.html { redirect_to @colloc, notice: 'Colloc was successfully created.' }
+        format.html { redirect_to @colloc, notice: 'La collocation à été ajoutée' }
         format.json { render :show, status: :created, location: @colloc }
       else
         format.html { render :new }
@@ -64,7 +60,7 @@ class CollocsController < ApplicationController
   def update
     respond_to do |format|
       if @colloc.update(colloc_params)
-        format.html { redirect_to @colloc, notice: 'Colloc was successfully updated.' }
+        format.html { redirect_to @colloc, notice: 'La collocation à été mise a jour.' }
         format.json { render :show, status: :ok, location: @colloc }
       else
         format.html { render :edit }
@@ -91,6 +87,6 @@ class CollocsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def colloc_params
-      params.require(:colloc).permit(:titre, :adresse, :size, :chambres, :max_people, :price)
+      params.require(:colloc).permit(:titre, :adresse, :size, :chambres, :max_people, :price, :description)
     end
 end

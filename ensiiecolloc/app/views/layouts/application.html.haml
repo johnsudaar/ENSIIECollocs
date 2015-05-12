@@ -41,8 +41,8 @@
               %li{:class => ("active" unless ! current_page?(new_user_registration_path))}
                 = link_to "S'inscrire", new_user_registration_path
               %li.show-for-large-up
-                %a{"aria-controls" => "login_drop_down", "aria-expanded" => "false", "data-dropdown" => "login_drop_down"} Connexion
-                #login_drop_down.f-dropdown.content.small{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+                %a.login-dropdown-button Connexion
+                #login_drop_down.f-dropdown.content.small{"data-dropdown-content" => "", :tabindex => "-1"}
                   = render :template => "devise/sessions/new"
               %li.hide-for-large-up{:class => ("active" unless ! current_page?(new_user_session_path))}
                 = link_to "Connexion", new_user_session_path

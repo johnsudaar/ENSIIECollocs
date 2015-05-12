@@ -14,10 +14,10 @@
 //= require jquery_ujs
 //= require vendor/fastclick.js
 //= require foundation
-//= require turbolinks
 //= require_tree .
 //= require toastr
 //= require jquery.stellar
+//= require dropzone
 
 
 toastr.options = {
@@ -39,8 +39,17 @@ toastr.options = {
 };
 
 $(function(){
-  $(document).foundation(); 
+  $(document).foundation();
   $.stellar();
+  $(".login-dropdown-button").click(
+    function(e) {
+      var leftOffset = $(e.target).offset().left;
+      var dropDown = $('#login_drop_down');
+      if (! dropDown.hasClass('visible'))
+        dropDown.addClass('visible').css({ left: leftOffset-200 });
+      else
+        dropDown.removeClass('visible').css({ left: -9999 });
+  });
 });
 
 

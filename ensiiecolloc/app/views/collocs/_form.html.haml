@@ -19,5 +19,11 @@
         = f.number_field :max_people, label: 'Nombre maximum de collocataires'
       .small-12.large-6.columns
         = f.text_field :price, label: "Prix"
+    .row
+      .small-12.columns
+        =f.text_area :description, :size => "50x5"
     .row.center-text
-      =f.submit "Créer une collocation"
+      -if @modification
+        = f.submit "Mettre a jour"
+      -else
+        =f.submit "Créer une collocation"

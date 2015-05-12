@@ -1,7 +1,8 @@
-%h1
-  #{@colloc.titre}
-  %small
-    Par #{@colloc.user.name} #{@colloc.user.surname}
+.clearfix
+  %h1.left
+    #{@colloc.titre}
+    %small Par #{@colloc.user.name} #{@colloc.user.surname}
+  = link_to 'Modifier', edit_colloc_path(@colloc), {:class => "button but-margins-reduced right"}
 .row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
   .columns.small-12.medium-6
     %ul.pricing-table{"data-equalizer-watch" => ""}
@@ -13,15 +14,22 @@
       %li.bullet-item Pour #{@colloc.max_people} personnes max
   .columns.small-12.medium-6#google-map{"data-equalizer-watch" => ""}
 
-.gallery
-  %ul.clearing-thumbs.small-block-grid-2.medium-block-grid-4{"data-clearing" => ""}
-    - @colloc.pictures.each do |picture|
-      %li
-        %a.th{:href => "#{picture.path}"}
-          %img{:src => "#{picture.thumb}"}
-= form_for @colloc, html: { multipart: true }, :url => url_for(:controller => 'collocs', :action => 'addpic') do |f|
-  =f.file_field :files, multiple: true
-  =f.submit
+.infos
+  - if ! (@colloc.description.nil? or @colloc.description == "")
+    .panel
+      %h1 Description
+      %p
+        = @colloc.description
+
+  - if @colloc.pictures.length > 0
+    .panel.gal-panel
+      %h1 Photos
+      .gallery
+        %ul.clearing-thumbs.small-block-grid-2.medium-block-grid-4{"data-clearing" => ""}
+          - @colloc.pictures.each do |picture|
+            %li
+              %a.th{:href => "#{picture.path}"}
+                %img{:src => "#{picture.thumb}"}
 
 :javascript
   locations = Array();
@@ -38,6 +46,3 @@
     initMap();
     placeAllPoints();
   });
-
-= link_to 'Edit', edit_colloc_path(@colloc)
-= link_to 'Back', collocs_path

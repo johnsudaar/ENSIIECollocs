@@ -1,7 +1,14 @@
-%h1 Editing colloc
+%h1 Modifier la colloc
 
-= render 'form'
+- @modification=true
+.panel
+  %h2 Infomations
+  = render 'form'
 
-= link_to 'Show', @colloc
-\|
-= link_to 'Back', collocs_path
+.panel
+  %h2 Ajouter une photo
+  = form_for @colloc, html: { :class => "dropzone",multipart: true }, :url => url_for(:controller => 'collocs', :action => 'addpic') do |f|
+    =f.file_field :files, multiple: true
+    =f.submit
+
+= link_to 'Retour', @colloc

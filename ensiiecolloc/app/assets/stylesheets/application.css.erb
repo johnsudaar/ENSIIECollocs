@@ -14,7 +14,7 @@
  *= require_self
  *= require foundation_and_overrides
  *= require toastr
-
+ *= require dropzone/dropzone
  */
 
  body{
@@ -85,4 +85,15 @@
 }
 .toast:hover{
   opacity: 1 !important;
+}
+
+.visible{
+  display: block !important;
+}
+
+.f-dropdown::before{
+  left:270px;
+}
+.f-dropdown::after{
+  left:269px;
 }
