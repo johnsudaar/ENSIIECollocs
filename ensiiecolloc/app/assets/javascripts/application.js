@@ -45,6 +45,10 @@ $(function(){
     function(e) {
       var leftOffset = $(e.target).offset().left;
       var dropDown = $('#login_drop_down');
+      var d_width = dropDown.width();
+      var style = "<style id=\"H4CK1NG\"> .f-dropdown::before{left:"+(d_width)+"px;} .f-dropdown::after{left:"+(d_width-1)+"px;}</style>";
+      $("#H4CK1NG").remove();
+      $(style).appendTo($("head"));
       if (! dropDown.hasClass('visible'))
         dropDown.addClass('visible').css({ left: leftOffset-200 });
       else
