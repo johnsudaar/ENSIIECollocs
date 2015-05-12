@@ -14,6 +14,9 @@ class CollocsController < ApplicationController
   def show
   end
 
+  def search
+  end
+
   # GET /collocs/new
   def new
     @colloc = Colloc.new

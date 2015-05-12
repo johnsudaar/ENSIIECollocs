@@ -22,4 +22,12 @@ class JsonController < ApplicationController
 			render :json => {type:"error",message:"Erreur interne"}
 		end
 	end
+
+  def search
+    if ! user_signed_in?
+
+    else
+      render :json => {success:false, message:"Utilisateur déconnécté"}
+    end
+  end
 end

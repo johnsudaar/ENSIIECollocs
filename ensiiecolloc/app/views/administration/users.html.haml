@@ -1,5 +1,7 @@
 %h1 Administration des utilisateurs
 
+.pagination_container
+  = will_paginate @users, renderer: FoundationPagination::Rails
 %table.full-width.responsive
   %thead
     %tr
@@ -26,3 +28,5 @@
               Passer utilisateur
             - else
               Passer administrateur
+.pagination_container
+  = will_paginate @users, renderer: FoundationPagination::Rails
