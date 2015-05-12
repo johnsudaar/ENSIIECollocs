@@ -10,45 +10,42 @@
     :javascript
       login_post_url = "#{json_login_path}";
       home_url = "#{root_path}";
-  %body
-    %nav.top-bar{"data-topbar" => "", :role => "navigation"}
-      %ul.title-area
-        %li.name
-          = link_to root_path, {class:"menu-title-link"} do
-            %img#logo-ensiie{:href => "#", :src => asset_path("ensiie.png")}
-            %h1.menu-title ENSIIE'Colloc
-        %li.toggle-topbar.menu-icon
-          %a{:href => "#"}
-            %span Menu
-      %section.top-bar-section
-        %ul.right
-          - if user_signed_in?
-            %li
-              %a{:href => "#"} Map
-            %li{:class => ("active" unless ! current_page?(collocs_path))}
-              = link_to "Collocs", collocs_path
-            %li
-              %a{:href => "#"} Info
-            - if current_user.colloc.nil?
-              %li{:class => ("active" unless ! current_page?(new_colloc_path))}
-                = link_to "Créer une colloc", new_colloc_path
-            -else
-              %li{:class => ("active" unless !current_page?(colloc_path(current_user.colloc.id)))}
-                = link_to "Gérer ma colloc",colloc_path(current_user.colloc.id)
-            - if current_user.admin?
-              %li{:class => ("active" unless ! current_page?(administration_users_path))}
-                = link_to "Administration", administration_users_path
-            %li
-              = link_to "Deconnexion", destroy_user_session_path, method: :delete
-          - else
-            %li{:class => ("active" unless ! current_page?(new_user_registration_path))}
-              = link_to "S'inscrire", new_user_registration_path
-            %li.show-for-large-up
-              %a{"aria-controls" => "login_drop_down", "aria-expanded" => "false", "data-dropdown" => "login_drop_down"} Connexion
-              #login_drop_down.f-dropdown.content.small{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
-                = render :template => "devise/sessions/new"
-            %li.hide-for-large-up{:class => ("active" unless ! current_page?(new_user_session_path))}
-              = link_to "Connexion", new_user_session_path
+  %body{"data-stellar-background-ratio"=>"0.2"}
+    .sticky
+      %nav.top-bar{"data-topbar" => "", :role => "navigation", "data-options"=>"sticky_on: [medium,large]"}
+        %ul.title-area
+          %li.name
+            = link_to root_path, {class:"menu-title-link"} do
+              %img#logo-ensiie{:href => "#", :src => asset_path("ensiie.png")}
+              %h1.menu-title ENSIIE'Colloc
+          %li.toggle-topbar.menu-icon
+            %a{:href => "#"}
+              %span Menu
+        %section.top-bar-section
+          %ul.right
+            - if user_signed_in?
+              %li{:class => ("active" unless ! current_page?(collocs_path))}
+                = link_to "Collocs", collocs_path
+              - if current_user.colloc.nil?
+                %li{:class => ("active" unless ! current_page?(new_colloc_path))}
+                  = link_to "Créer une colloc", new_colloc_path
+              -else
+                %li{:class => ("active" unless !current_page?(colloc_path(current_user.colloc.id)))}
+                  = link_to "Gérer ma colloc",colloc_path(current_user.colloc.id)
+              - if current_user.admin?
+                %li{:class => ("active" unless ! current_page?(administration_users_path))}
+                  = link_to "Administration", administration_users_path
+              %li
+                = link_to "Deconnexion", destroy_user_session_path, method: :delete
+            - else
+              %li{:class => ("active" unless ! current_page?(new_user_registration_path))}
+                = link_to "S'inscrire", new_user_registration_path
+              %li.show-for-large-up
+                %a{"aria-controls" => "login_drop_down", "aria-expanded" => "false", "data-dropdown" => "login_drop_down"} Connexion
+                #login_drop_down.f-dropdown.content.small{"aria-hidden" => "true", "data-dropdown-content" => "", :tabindex => "-1"}
+                  = render :template => "devise/sessions/new"
+              %li.hide-for-large-up{:class => ("active" unless ! current_page?(new_user_session_path))}
+                = link_to "Connexion", new_user_session_path
     .container
       %div
         / ---------------------------------------------------------------------------------------------------------------------------------

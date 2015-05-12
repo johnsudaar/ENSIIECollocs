@@ -10,4 +10,5 @@ class Colloc < ActiveRecord::Base
   belongs_to :user
   geocoded_by :adresse
   after_validation :geocode
+  has_many :pictures, dependent: :destroy
 end

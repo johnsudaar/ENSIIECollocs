@@ -1,10 +1,11 @@
 class CollocsController < ApplicationController
-  before_action :set_colloc, only: [:show, :edit, :update, :destroy]
+  before_action :set_colloc, only: [:show, :edit, :update, :destroy, :addpic, :delpic]
   before_action :authenticate_user!
 
   # GET /collocs
   # GET /collocs.json
   def index
+    @all_collocs = Colloc.all;
     @collocs = Colloc.paginate(:page => params[:page], :per_page => 6)
   end
 
@@ -20,6 +21,25 @@ class CollocsController < ApplicationController
 
   # GET /collocs/1/edit
   def edit
+  end
+
+  def addpic
+    i=0
+    params[:colloc][:files].each do |file|
+      i = i+1
+      pic = Picture.new
+      up = PictureUploader.new
+      up.store!(file)
+      pic.colloc = @colloc
+      pic.path = up.url
+      pic.thumb = up.thumb.url
+      pic.save
+    end
+    flash[:notice] = i.to_s+" photos ajoutées"
+    redirect_to @colloc
+  end
+
+  def delpic
   end
 
   # POST /collocs

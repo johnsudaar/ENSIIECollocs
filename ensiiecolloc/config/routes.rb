@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions" }
   post 'json/login'
 
+  patch "collocs/addpic/:id", to:'collocs#addpic'
   get 'administration/users'
   get 'administration/setadmin/:id', to: 'administration#setadmin', as: :administration_set_admin
   get 'administration/activation/:id', to: 'administration#setactivation', as: :administration_activation

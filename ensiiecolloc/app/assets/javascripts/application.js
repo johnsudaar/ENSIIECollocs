@@ -17,6 +17,8 @@
 //= require turbolinks
 //= require_tree .
 //= require toastr
+//= require jquery.stellar
+
 
 toastr.options = {
   "closeButton": true,
@@ -36,7 +38,11 @@ toastr.options = {
   "hideMethod": "fadeOut"
 };
 
-$(function(){ $(document).foundation(); });
+$(function(){
+  $(document).foundation(); 
+  $.stellar();
+});
+
 
 $(function (){
         $("#connexion_user").submit(function(event){
