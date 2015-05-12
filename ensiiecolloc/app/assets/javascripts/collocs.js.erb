@@ -45,3 +45,26 @@ function placePoint(p){
     infoWindow.open(map,marker)
   });
 }
+
+
+$(function(){
+  Dropzone.options.ajoutPhoto = {
+    dictDefaultMessage: "Cliquez ou glissez-déposez vos images ici pour les ajouter.",
+    acceptedFiles: "image/*"
+  };
+  $(".button-delete").click(function(e){
+    remove_url = $(this).attr("picture-delete-url");
+    $.get( remove_url, function( data ) {
+      if(data.success){
+        console.log($("#"+data.picture));
+        $("#"+data.picture).remove();
+        toastr.success(data.message);
+      }else{
+        toastr.error(data.message);
+      }
+    });
+    e.preventDefault();
+  });
+
+
+});

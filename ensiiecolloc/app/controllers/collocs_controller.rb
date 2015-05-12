@@ -21,21 +21,43 @@ class CollocsController < ApplicationController
 
   # GET /collocs/1/edit
   def edit
+    if @colloc.user != current_user
+      flash[:error] = "Collocation introuvable"
+      redirect_to root_path
+    end
   end
 
   def addpic
-    params[:colloc][:files].each do |file|
+    if @colloc.user == current_user
       pic = Picture.new
       up = PictureUploader.new
-      up.store!(file)
+      up.store!(params[:file])
       pic.colloc = @colloc
       pic.path = up.url
       pic.thumb = up.thumb.url
       pic.save
+      render :json => "Success"
+    else
+      render :json => "ERROR"
     end
   end
 
   def delpic
+    if Picture.find params[:pic]
+      pic = Picture.find params[:pic]
+      if pic.colloc.id == @colloc.id
+        if @colloc.user == current_user
+          pic.delete
+          render :json => {success:true, message:"Image supprimée",picture: params[:pic]}
+        else
+          render :json => {success:false, message:"Image introuvable",picture: 0}
+        end
+      else
+        render :json => {success:false, message:"Image introuvable",picture: 0}
+      end
+    else
+      render :json => {success:false, message:"Image introuvable",picture: 0}
+    end
   end
 
   # POST /collocs
@@ -58,24 +80,34 @@ class CollocsController < ApplicationController
   # PATCH/PUT /collocs/1
   # PATCH/PUT /collocs/1.json
   def update
-    respond_to do |format|
-      if @colloc.update(colloc_params)
-        format.html { redirect_to @colloc, notice: 'La collocation à été mise a jour.' }
-        format.json { render :show, status: :ok, location: @colloc }
-      else
-        format.html { render :edit }
-        format.json { render json: @colloc.errors, status: :unprocessable_entity }
+    if @colloc.user == current_user
+      respond_to do |format|
+        if @colloc.update(colloc_params)
+          format.html { redirect_to @colloc, notice: 'La collocation à été mise a jour.' }
+          format.json { render :show, status: :ok, location: @colloc }
+        else
+          format.html { render :edit }
+          format.json { render json: @colloc.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:error] = "Collocation introuvable"
+      redirect_to root_path
     end
   end
 
   # DELETE /collocs/1
   # DELETE /collocs/1.json
   def destroy
-    @colloc.destroy
-    respond_to do |format|
-      format.html { redirect_to collocs_url, notice: 'Colloc was successfully destroyed.' }
-      format.json { head :no_content }
+    if @colloc.user == current_user
+      @colloc.destroy
+      respond_to do |format|
+        format.html { redirect_to collocs_url, notice: 'Colloc was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      flash[:error] = "Collocation introuvable"
+      redirect_to root_path
     end
   end
 

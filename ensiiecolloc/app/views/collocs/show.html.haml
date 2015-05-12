@@ -2,7 +2,8 @@
   %h1.left
     #{@colloc.titre}
     %small Par #{@colloc.user.name} #{@colloc.user.surname}
-  = link_to 'Modifier', edit_colloc_path(@colloc), {:class => "button but-margins-reduced right"}
+  - if @colloc.belongs_to current_user
+    = link_to 'Modifier', edit_colloc_path(@colloc), {:class => "button but-margins-reduced right"}
 .row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
   .columns.small-12.medium-6
     %ul.pricing-table{"data-equalizer-watch" => ""}
