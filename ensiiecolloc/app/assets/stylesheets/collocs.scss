@@ -1,11 +1,17 @@
 // Place all the styles related to the Collocs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+//= require jquery.nouislider
+
 
 #google-map{
   min-height: 250px;
   margin: 0px;
   padding: 0px;
+}
+
+#google-map.high{
+  min-height:300px;
 }
 
 #list-collocs > #google-map{
@@ -67,4 +73,17 @@ ul.pagination{
 
 .th{
   min-width:100%;
+}
+.sliders{
+  padding-left : 5px;
+}
+
+.label-slider{
+  margin-top:5px;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.no-margin-bottom{
+  margin-bottom:0px;
 }

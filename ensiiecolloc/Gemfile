@@ -35,6 +35,8 @@ gem 'carrierwave'
 gem 'rmagick', '2.13.2', :git=>'http://github.com/rmagick/rmagick.git'
 gem 'stellar-js-rails'
 gem 'dropzonejs-rails'
+gem 'nouislider-rails'
+
 
 
 

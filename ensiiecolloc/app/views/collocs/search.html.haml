@@ -1,0 +1,46 @@
+%h1 Recherche
+:javascript
+  locations = Array();
+.row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
+  #google-map.high.medium-6.columns{"data-equalizer-watch" => ""}
+  .medium-6.columns{"data-equalizer-watch" => ""}
+    .sliders
+      %h4 Prix :
+      #price
+      %p.label-slider
+        Entre
+        %span#price-slider-min
+        et
+        %span#price-slider-max
+      %h4 Taille :
+      #size
+      %p.label-slider
+        Entre
+        %span#size-slider-min
+        et
+        %span#size-slider-max
+      %h4 Nombre de collocataires :
+      #max_people
+      %p.label-slider
+        Entre
+        %span#people-slider-min
+        et
+        %span#people-slider-max
+        personnes
+      %h4 Zone :
+      #dist
+      %p.label-slider.no-margin-bottom
+        Dans un rayon de
+        %span#dist-slider
+      Autour de :
+      %input#start_point{"type"=>"text"}
+
+
+:javascript
+  $(function(){
+    initMap();
+    placeAllPoints();
+  });
+
+:javascript
+  setupSearchUI();
