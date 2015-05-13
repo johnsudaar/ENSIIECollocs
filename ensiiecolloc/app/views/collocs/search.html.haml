@@ -2,8 +2,8 @@
 :javascript
   locations = Array();
 .row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
-  #google-map.high.medium-6.columns{"data-equalizer-watch" => ""}
-  .medium-6.columns{"data-equalizer-watch" => ""}
+  #google-map.high.large-6.columns{"data-equalizer-watch" => ""}
+  .large-6.columns{"data-equalizer-watch" => ""}
     .sliders
       %h4 Prix :
       #price.search-slider
@@ -28,10 +28,11 @@
         %span#people-slider-max
         personnes
       %h4 Zone :
-      #dist
+      #dist.search-slider
       %p.label-slider.no-margin-bottom
         Dans un rayon de
         %span#dist-slider
+        km
       Autour de :
       %input#start_point{"type"=>"text"}
 

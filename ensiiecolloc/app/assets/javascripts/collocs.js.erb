@@ -136,13 +136,14 @@ function setupSearchUI(price_min,price_max,size_min,size_max,people_min,people_m
     format: wNumb({
   		decimals: 0,
   		thousand: ' ',
-  		postfix: 'km',
+  		postfix: '',
   	})
   });
   $("#dist").Link('lower').to($("#dist-slider"));
   $(".search-slider").on({set: refreshData});
 
-  new google.maps.places.Autocomplete($("#start_point")[0]);
+  autocomplete_center = new google.maps.places.Autocomplete($("#start_point")[0]);
+  google.maps.event.addListener(autocomplete_center, 'place_changed', refreshData);
   $(refreshData);
 }
 
@@ -150,28 +151,55 @@ function refreshData(){
   var prices  = $("#price").val();
   var sizes   = $("#size").val();
   var peoples = $("#max_people").val();
+  var dist    = $("#dist").val()*1000;
+  var center  = autocomplete_center.getPlace();
   var datas = {min_price: prices[0], max_price: prices[1], min_size: sizes[0], max_size: sizes[1], min_people: peoples[0], max_people: peoples[1]};
   $.get(json_search_url,datas).done(function(data){
     if(data.success){
       if(data.results.length == 0){
         toastr.warning("Aucune collocation ne corréspond a vos critères");
       }else{
+        if(center){
+          var center_loc = new google.maps.LatLng(center.geometry.location.lat(), center.geometry.location.lng());
+        }
         locations = Array();
         for(i = 0; i< data.results.length; i++){
-          loc = Object();
-          loc.id = data.results[i].id;
-          loc.lat = data.results[i].latitude;
-          loc.long = data.results[i].longitude;
-          loc.price = data.results[i].price;
-          loc.max_people = data.results[i].max_people;
-          loc.name = data.results[i].titre;
-          loc.path = "/collocs/"+loc.id;
-          loc.add = data.results[i].adresse;
-          loc.size = data.results[i].size;
-          loc.chambres = data.results[i].chambres;
-          locations.push(loc);
+          var cur_pos = new google.maps.LatLng(data.results[i].latitude,data.results[i].longitude);
+          if(!center || google.maps.geometry.spherical.computeDistanceBetween(center_loc,cur_pos) <= dist){
+            loc = Object();
+            loc.id = data.results[i].id;
+            loc.lat = data.results[i].latitude;
+            loc.long = data.results[i].longitude;
+            loc.price = data.results[i].price;
+            loc.max_people = data.results[i].max_people;
+            loc.name = data.results[i].titre;
+            loc.path = "/collocs/"+loc.id;
+            loc.add = data.results[i].adresse;
+            loc.size = data.results[i].size;
+            loc.chambres = data.results[i].chambres;
+            locations.push(loc)
+          }
         }
         initMap();
+        if(center){
+          new google.maps.Marker({
+            position: center_loc,
+            map: map,
+            title: "Centre de recherche"
+          });
+          var circle_dist = {
+            strokeColor: '#33CCCC',
+            strokeOpacity: 0.6,
+            strokeWeight: 2,
+            fillColor: '#33CCCC',
+            fillOpacity: 0.35,
+            map: map,
+            center: center_loc,
+            radius: dist
+          };
+          console.log(dist);
+          new google.maps.Circle(circle_dist);
+        }
         placeAllPoints();
         $("#search-results").empty();
         $(generateResultsHTML()).appendTo("#search-results");
@@ -220,15 +248,3 @@ function generateSingleResultHTML(location){
   return final;
 
 }
-
-// .small-12.medium-4.column
-//   %ul.pricing-table
-//     %div{"data-equalizer-watch" => ""}
-//       %li.title #{colloc.titre}
-//       %li.price #{colloc.price} €/mois
-//       %li.description #{colloc.adresse}
-//       %li.bullet-item #{colloc.size} m²
-//       %li.bullet-item #{colloc.chambres} chambres
-//       %li.bullet-item Pour #{colloc.max_people} personnes max
-//     %li.cta-button
-//       = link_to "Voir", colloc, {:class=> "button white-text floor"}
