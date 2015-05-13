@@ -24,10 +24,15 @@ class JsonController < ApplicationController
 	end
 
   def search
-    if ! user_signed_in?
-
+    if user_signed_in?
+      if !(params[:min_price].nil? or params[:max_price].nil? or params[:min_size].nil? or params[:max_size].nil? or params[:min_people].nil? or params[:max_people].nil?)
+        res = Colloc.where(price: params[:min_price] .. params[:max_price]).where(size: params[:min_size] .. params[:max_size]).where(max_people: params[:min_people] .. params[:max_people])
+        render :json => {success:true, results:res}
+      else
+        render :json => {success:false, message:"Erreur lors de la transmission des données"}
+      end
     else
-      render :json => {success:false, message:"Utilisateur déconnécté"}
+      render :json => {success:false, message:"Vous devez être connécté pour pouvoir voir les collocs"}
     end
   end
 end

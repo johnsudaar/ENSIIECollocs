@@ -60,7 +60,6 @@ $(function(){
     remove_url = $(this).attr("picture-delete-url");
     $.get( remove_url, function( data ) {
       if(data.success){
-        console.log($("#"+data.picture));
         $("#"+data.picture).remove();
         toastr.success(data.message);
       }else{
@@ -71,13 +70,14 @@ $(function(){
   });
 });
 
-function setupSearchUI(){
+function setupSearchUI(price_min,price_max,size_min,size_max,people_min,people_max){
   $("#price").noUiSlider({
-    start: [20, 80],
+    start: [price_min,price_max],
+    step : 0.5,
     connect: true,
     range: {
-      'min': 0,
-      'max': 100
+      'min': price_min,
+      'max': price_max
     },
     format: wNumb({
   		decimals: 2,
@@ -91,12 +91,12 @@ function setupSearchUI(){
 
 
   $("#size").noUiSlider({
-    start: [20, 80],
+    start: [size_min, size_max],
     step:1,
     connect: true,
     range: {
-      'min': 0,
-      'max': 100
+      'min': size_min,
+      'max': size_max
     },
     format: wNumb({
   		decimals: 0,
@@ -109,12 +109,12 @@ function setupSearchUI(){
   $("#size").Link('upper').to($("#size-slider-max"));
 
   $("#max_people").noUiSlider({
-    start: [20, 80],
+    start: [people_min, people_max],
     step: 1,
     connect: true,
     range: {
-      'min': 0,
-      'max': 100
+      'min': people_min,
+      'max': people_max
     },
     format: wNumb({
   		decimals: 0,
@@ -127,11 +127,11 @@ function setupSearchUI(){
   $("#max_people").Link('upper').to($("#people-slider-max"));
 
   $("#dist").noUiSlider({
-    start: [20],
+    start: [1],
     step: 1,
     range: {
       'min': 0,
-      'max': 100
+      'max': 25
     },
     format: wNumb({
   		decimals: 0,
@@ -140,7 +140,95 @@ function setupSearchUI(){
   	})
   });
   $("#dist").Link('lower').to($("#dist-slider"));
+  $(".search-slider").on({set: refreshData});
 
   new google.maps.places.Autocomplete($("#start_point")[0]);
+  $(refreshData);
+}
+
+function refreshData(){
+  var prices  = $("#price").val();
+  var sizes   = $("#size").val();
+  var peoples = $("#max_people").val();
+  var datas = {min_price: prices[0], max_price: prices[1], min_size: sizes[0], max_size: sizes[1], min_people: peoples[0], max_people: peoples[1]};
+  $.get(json_search_url,datas).done(function(data){
+    if(data.success){
+      if(data.results.length == 0){
+        toastr.warning("Aucune collocation ne corréspond a vos critères");
+      }else{
+        locations = Array();
+        for(i = 0; i< data.results.length; i++){
+          loc = Object();
+          loc.id = data.results[i].id;
+          loc.lat = data.results[i].latitude;
+          loc.long = data.results[i].longitude;
+          loc.price = data.results[i].price;
+          loc.max_people = data.results[i].max_people;
+          loc.name = data.results[i].titre;
+          loc.path = "/collocs/"+loc.id;
+          loc.add = data.results[i].adresse;
+          loc.size = data.results[i].size;
+          loc.chambres = data.results[i].chambres;
+          locations.push(loc);
+        }
+        initMap();
+        placeAllPoints();
+        $("#search-results").empty();
+        $(generateResultsHTML()).appendTo("#search-results");
+        $(document).foundation('equalizer', 'reflow');
+
+      }
+    }else{
+      toastr.error(data.message);
+    }
+  });
+}
+
+function generateResultsHTML(){
+  var final = "<div class=\"pagination_container small-12\">";
+  var first = true;
+  for(i = 0; i< locations.length && i<= 6; i++){
+    if(i%3 == 0){
+      if(first){
+        first = false;
+      }else{
+        final += "</div>";
+      }
+      final += "<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">"
+    }
+    final += generateSingleResultHTML(locations[i]);
+  }
+  final += "</div>";
+  return final;
+}
+
+function generateSingleResultHTML(location){
+  var final = "<div class=\"small-12 medium-4 columns\">";
+  final += "<ul class=\"pricing-table\">"
+    final += "<div data-equalizer-watch>";
+      final += "<li class=\"title\">"+location.name+"</li>";
+      final += "<li class=\"price\">"+location.price+"</li>";
+      final += "<li class=\"description\">"+location.add+"</li>";
+      final += "<li class=\"bullet-item\">"+location.size+"</li>";
+      final += "<li class=\"bullet-item\">"+location.chambres+"</li>";
+      final += "<li class=\"bullet-item\"> Pour "+location.chambres+"</li>";
+    final += "</div>";
+    final += "<li class=\"cta-button\">";
+      final += "<a href=\""+location.path+"\" class=\"button white-text floor\"> Voir </a>";
+    final += "</li>";
+  final += "</ul> </div>";
+  return final;
 
 }
+
+// .small-12.medium-4.column
+//   %ul.pricing-table
+//     %div{"data-equalizer-watch" => ""}
+//       %li.title #{colloc.titre}
+//       %li.price #{colloc.price} €/mois
+//       %li.description #{colloc.adresse}
+//       %li.bullet-item #{colloc.size} m²
+//       %li.bullet-item #{colloc.chambres} chambres
+//       %li.bullet-item Pour #{colloc.max_people} personnes max
+//     %li.cta-button
+//       = link_to "Voir", colloc, {:class=> "button white-text floor"}

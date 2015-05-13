@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'home#index'
   devise_for :users, controllers: { sessions: "users/sessions" }
   post 'json/login'
+  get 'json/search'
 
   post "collocs/addpic/:id", to:'collocs#addpic', as: :colloc_pic_add
   get "collocs/delpic/:id/:pic", to:"collocs#delpic", as: :colloc_pic_del
