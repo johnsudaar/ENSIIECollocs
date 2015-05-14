@@ -35,4 +35,20 @@ class JsonController < ApplicationController
       render :json => {success:false, message:"Vous devez être connécté pour pouvoir voir les collocs"}
     end
   end
+
+  def user_search
+    if user_signed_in?
+      if ! params[:q].nil?
+        res = User.where(["email like ?","%"+params[:q]+"%"]).select(:email)
+        if res.length == 0 and EmailValidator.valid?(params[:q])
+          res = [{:id => nil,:email => params[:q]}]
+        end
+        render :json => {success:true, items:res}
+      else
+        render :json => {success:false, message: "Erreur lors de la transmission des données"}
+      end
+    else
+      render :json => {success:false, message:"Vous devez être connécté"}
+    end
+  end
 end

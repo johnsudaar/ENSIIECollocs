@@ -1,9 +1,44 @@
 //= require jquery.nouislider
 //= require wnumb/wNumb
+//= require select2
+
 
 
 $(function(){
   new google.maps.places.Autocomplete($("#colloc_adresse")[0]);
+  if (typeof autocomplete_email_url !== 'undefined'){
+    $("#email-autocomplete").select2({
+      ajax: {
+        url: autocomplete_email_url,
+        dataType: 'json',
+        type:"GET",
+        delay: 250,
+        data: function (params,page) {
+          return {
+            q: params, // search term
+            page:1
+          };
+        },
+        results: function (data, page) {
+          // parse the results into the format expected by Select2.
+          // since we are using custom formatting functions we do not need to
+          // alter the remote JSON data
+          return {
+            results: data.items.map(function(item){
+              return{
+                id: item.email,
+                text: item.email
+              };
+            })
+          };
+        },
+        language: "fr",
+        cache: true
+      },
+      escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+      minimumInputLength: 1
+    });
+  }
 });
 
 function placeAllPoints(){

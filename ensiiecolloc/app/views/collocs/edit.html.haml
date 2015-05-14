@@ -22,7 +22,13 @@
           %td.center-text
             -if ! user.c_admin
               = link_to "Renvoyer", colloc_leave_path(@colloc,user),{:class => "no-margin button tiny alert expand"}
-
+  %h2 Ajouter un membre
+  = form_tag colloc_add_email_path do
+    .row
+      .small-12.medium-10.columns
+        = hidden_field_tag :email,"",:id => "email-autocomplete", :style => "width:100%;"
+      .small-12.medium-2.columns
+        = submit_tag "Ajouter", :class => "tiny button success no-margins expand"
 
 - @modification=true
 .panel
@@ -43,5 +49,7 @@
         %li.delpic{:id => picture.id}
           %img.th{:src => picture.thumb}
           .button.alert.expand.button-delete{"picture-delete-url" => colloc_pic_del_path(@colloc,picture.id)} Supprimer
-
 = link_to 'Retour', @colloc
+
+:javascript
+  autocomplete_email_url = "#{json_user_search_path}"

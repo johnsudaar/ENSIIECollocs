@@ -1,5 +1,5 @@
 class CollocsController < ApplicationController
-  before_action :set_colloc, only: [:show, :edit, :update, :destroy, :addpic, :delpic, :join, :accept, :leave]
+  before_action :set_colloc, only: [:show, :edit, :update, :destroy, :addpic, :delpic, :join, :accept, :leave, :add_email]
   before_action :authenticate_user!
 
   # GET /collocs
@@ -173,6 +173,32 @@ class CollocsController < ApplicationController
       flash[:error] = "Vous ne pouvez pas administrer cette collocation"
       redirect_to root_path
     end
+  end
+
+  def add_email
+    if current_user.can_admin(@colloc)
+      u = User.find_by({:email => params[:email]})
+      if ! u.nil?
+        if u.colloc.nil?
+          if ! @colloc.full
+            u.colloc = @colloc
+            u.accepted = true
+            u.save
+            flash[:notice] = u.name+" "+u.surname+" a été ajouté a la collocation"
+          else
+            flash[:error] = "La collocation est déjà pleine"
+          end
+        else
+          flash[:error] = "L'utilisateur à déjà une collocation"
+        end
+      else
+        flash[:error] = "Utilisateur introuvable"
+      end
+    else
+      flash[:error] = "Vous ne pouvez pax administer cette collocation"
+      redirect_to root_path
+    end
+    redirect_to edit_colloc_path(@colloc)
   end
 
   private
