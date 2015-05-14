@@ -40,6 +40,8 @@
               - if current_user.admin?
                 %li{:class => ("active" unless ! current_page?(administration_users_path))}
                   = link_to "Administration", administration_users_path
+              %li{:class => ("active" unless ! current_page?(edit_user_registration_path(current_user)))}
+                = link_to "Profile", edit_user_registration_path(current_user)
               %li
                 = link_to "Deconnexion", destroy_user_session_path, method: :delete
             - else

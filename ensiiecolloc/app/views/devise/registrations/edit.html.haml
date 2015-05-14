@@ -1,43 +1,44 @@
-%h2
-  Edit #{resource_name.to_s.humanize}
+%h2 Modification du profile
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-  = devise_error_messages!
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :surname
-    = f.text_field :surname
-  .field
-    = f.label :promo
-    = f.number_field :promo, in:1980..2020, step:1
-  .field
-    = f.label :phone
-    = f.telephone_field :phone
-  .field
-    = f.label :email
-    %br/
-    = f.email_field :email, autofocus: true
-  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-    %div
-      Currently waiting confirmation for: #{resource.unconfirmed_email}
-  .field
-    = f.label :password
-    %i (leave blank if you don't want to change it)
-    %br/
-    = f.password_field :password, autocomplete: "off"
-  .field
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation, autocomplete: "off"
-  .field
-    = f.label :current_password
-    %i (we need your current password to confirm your changes)
-    %br/
-    = f.password_field :current_password, autocomplete: "off"
+  - if resource.errors.any?
+    - resource.errors.full_messages.each do |msg|
+      :javascript
+        toastr.error("#{msg}");
+  .row
+    .field.small-12.large-6.columns
+      = f.text_field :name, label: 'Prénom'
+    .field.small-12.large-6.columns
+      = f.text_field :surname, label: 'Nom'
+  .row
+    .field.small-12.large-6.columns
+      = f.number_field :promo, in:2000..Time.now.year+3, step:1, label: 'Promotion'
+    .field.small-12.large-6.columns
+      = f.telephone_field :phone, label: 'Téléphone'
+  .row
+    .field.small-12.large-12.columns
+      %br/
+      = f.email_field :email, autofocus: true, label: 'E-Mails'
+    - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      %div
+        Currently waiting confirmation for: #{resource.unconfirmed_email}
+  .row
+    .field.small-12.large-6.columns#add-pass-validation
+      %br/
+      = f.password_field :password, autocomplete: "off", label: 'Nouveau mot de passe'
+      %i (laisser blanc si vous ne souhaitez pas le changer)
+    .field.small-12.large-6.columns
+      %br/
+      = f.password_field :password_confirmation, autocomplete: "off", label: 'Confirmation'
+  .row
+    .field.small-12.large-12.columns
+      %br/
+      = f.password_field :current_password, autocomplete: "off", label: 'Ancien mot de passe'
+      %i (merci de le remplire pour confirmer le changement)
+
   .actions
     = f.submit "Update"
-%h3 Cancel my account
-%p
-  Unhappy? #{button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}
-= link_to "Back", :back
+
+:javascript
+  $("#add-pass-validation").find("#user_password").pwstrength({
+    minChar:8,
+  });
