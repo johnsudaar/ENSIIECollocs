@@ -19,6 +19,10 @@ class CollocsController < ApplicationController
 
   # GET /collocs/new
   def new
+    if ! current_user.colloc.nil?
+      flash[:error] = "Vous avez déjà une collocation"
+      redirect_to root_path
+    end
     @colloc = Colloc.new
   end
 
@@ -84,17 +88,22 @@ class CollocsController < ApplicationController
   # POST /collocs
   # POST /collocs.json
   def create
-    @colloc = Colloc.new(colloc_params)
-    current_user.colloc = @colloc
-    current_user.c_admin = true
-    current_user.accepted = true
-    respond_to do |format|
-      if @colloc.save and current_user.save
-        format.html { redirect_to @colloc, notice: 'La collocation à été ajoutée' }
-        format.json { render :show, status: :created, location: @colloc }
-      else
-        format.html { render :new }
-        format.json { render json: @colloc.errors, status: :unprocessable_entity }
+    if ! current_user.colloc.nil?
+      flash[:error] = "Vous avez déjà une collocation"
+      redirect_to root_path
+    else
+      @colloc = Colloc.new(colloc_params)
+      current_user.colloc = @colloc
+      current_user.c_admin = true
+      current_user.accepted = true
+      respond_to do |format|
+        if @colloc.save and current_user.save
+          format.html { redirect_to @colloc, notice: 'La collocation à été ajoutée' }
+          format.json { render :show, status: :created, location: @colloc }
+        else
+          format.html { render :new }
+          format.json { render json: @colloc.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -179,23 +188,36 @@ class CollocsController < ApplicationController
 
   def add_email
     if current_user.can_admin(@colloc)
-      u = User.find_by({:email => params[:email]})
-      if ! u.nil?
-        if u.colloc.nil?
-          if ! @colloc.full
+      if ! @colloc.full
+        u = User.find_by({:email => params[:email]})
+        if ! u.nil?
+          if u.colloc.nil?
             u.colloc = @colloc
             u.accepted = true
             u.save
             CollocMailer.added_to_colloc(u,@colloc).deliver_now
             flash[:notice] = u.name+" "+u.surname+" a été ajouté a la collocation"
           else
-            flash[:error] = "La collocation est déjà pleine"
+            flash[:error] = "L'utilisateur à déjà une collocation"
           end
         else
-          flash[:error] = "L'utilisateur à déjà une collocation"
+          if EmailValidator.valid?(params[:email])
+            if ! Waiting.exists?(:email => params[:email])
+              w = Waiting.new
+              w.email = params[:email]
+              w.colloc = @colloc
+              w.save
+              CollocMailer.new_user_by_admin(params[:email],@colloc).deliver_now
+              flash[:notice] = "Invitation envoyée"
+            else
+              flash[:error] = "L'utilisateur à déjà une collocation"
+            end
+          else
+            flash[:error] = "Email invalide"
+          end
         end
       else
-        flash[:error] = "Utilisateur introuvable"
+        flash[:error] = "La collocation est déjà pleine"
       end
     else
       flash[:error] = "Vous ne pouvez pax administer cette collocation"

@@ -35,11 +35,11 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = {
           api_key: 'key-bbcbb45d6e83baa6b46e0579576dba77',
-          domain: 'test.tld'
+          domain: 'sandboxb2077991547f4fde8252b9c30490d134.mailgun.org'
   }
 
   # Raises error for missing translations

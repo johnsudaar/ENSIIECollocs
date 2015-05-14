@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index'
-  devise_for :users, controllers: { sessions: "users/sessions" }
+  devise_for :users, controllers: { registrations: "users/registrations" }
   post 'json/login'
   get 'json/search'
   get 'json/user_search'

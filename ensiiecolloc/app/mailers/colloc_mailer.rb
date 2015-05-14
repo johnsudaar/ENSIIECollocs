@@ -1,5 +1,4 @@
 class CollocMailer < ApplicationMailer
-
   def new_colloc_request(from,colloc)
     @from = from
     @colloc = colloc
@@ -19,5 +18,13 @@ class CollocMailer < ApplicationMailer
     @colloc = colloc
     @admin = @colloc.admin
     mail(to:@user.email, subject:"Vous avez été ajouté à une collocation")
+  end
+
+  def new_user_by_admin(email,colloc)
+    @user = nil
+    @email = email
+    @colloc = colloc
+    @admin = @colloc.admin
+    mail(to:@email, subject:"#{@admin.name} #{@admin.surname} vous invite a rejoindre EnsiieColloc")
   end
 end

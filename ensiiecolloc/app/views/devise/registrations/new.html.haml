@@ -16,7 +16,10 @@
       = f.telephone_field :phone, label: 'Téléphone'
   .row
     .field.columns
-      = f.email_field :email, label: 'E-mail'
+      - if @c_email.nil?
+        = f.email_field :email, label: 'E-mail'
+      - else
+        = f.email_field :email, value: @c_email, label: 'E-mail'
   .row
     .field.small-12.large-6.columns#add-pass-validation
       = f.password_field :password, autocomplete: "off", label: 'Mot de passe'

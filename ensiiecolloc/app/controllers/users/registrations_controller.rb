@@ -3,14 +3,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    if Waiting.exists?(:email => params[:email])
+      @c_email = params[:email]
+    end
+    super
+  end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    if Waiting.exists?(:email => resource.email)
+      w = Waiting.find_by(:email => resource.email)
+      if ! w.colloc.full
+        resource.colloc = w.colloc
+        resource.accepted = true
+        resource.save!
+        w.destroy
+      end
+    end
+  end
 
   # GET /resource/edit
   # def edit

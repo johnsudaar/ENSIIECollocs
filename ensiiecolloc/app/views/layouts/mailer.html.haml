@@ -1,6 +1,9 @@
 %hmtl
   %body
-    Bonjour #{@user.name} #{@user.surname},
+    -if @user.nil?
+      Bonjour #{@email}
+    -else
+      Bonjour #{@user.name} #{@user.surname},
     %br
     = yield
     %br
