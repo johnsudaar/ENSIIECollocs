@@ -1,9 +1,11 @@
 .clearfix
   %h1.left
     #{@colloc.titre}
-    %small Par #{@colloc.user.name} #{@colloc.user.surname}
-  - if @colloc.belongs_to current_user
+    %small Par #{@colloc.admin.name} #{@colloc.admin.surname}
+  - if @colloc.admin == current_user
     = link_to 'Modifier', edit_colloc_path(@colloc), {:class => "button but-margins-reduced right"}
+  - if current_user.colloc.nil? and ! @colloc.full
+    = link_to 'Rejoindre', colloc_join_path(@colloc), {:class => "button but-margins-reduced right"}
 .row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
   .columns.small-12.medium-6
     %ul.pricing-table{"data-equalizer-watch" => ""}
@@ -16,11 +18,18 @@
   .columns.small-12.medium-6#google-map{"data-equalizer-watch" => ""}
 
 .infos
-  - if ! (@colloc.description.nil? or @colloc.description == "")
-    .panel
-      %h1 Description
-      %p
-        = @colloc.description
+  .row{"data-equalize" => "", "data-equalizer-mq"=>"medium-up"}
+    - if ! (@colloc.description.nil? or @colloc.description == "")
+      .panel.panel-center.small-12.medium-6.columns
+        %h1 Description
+        %p
+          = @colloc.description
+    .panel.small-12.columns{"data-equalizer-watch" => "", :class => ("medium-5 panel-center" unless ((@colloc.description.nil? or @colloc.description == "")))}
+      %h1 Membres
+      %ul
+      - @colloc.users.where({:accepted => true}).each do |u|
+        %li #{u.surname} #{u.name}
+
 
   - if @colloc.pictures.length > 0
     .panel.gal-panel

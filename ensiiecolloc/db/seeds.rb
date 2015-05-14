@@ -74,7 +74,6 @@ c1.size = 200
 c1.chambres = 2
 c1.max_people = 2
 c1.price = 250
-c1.user = u1
 c1.save!
 
 c2 = Colloc.new
@@ -84,7 +83,6 @@ c2.size = 400
 c2.chambres = 4
 c2.max_people = 4
 c2.price = 600
-c2.user = u2
 c2.save!
 
 c3 = Colloc.new
@@ -94,7 +92,6 @@ c3.size = 350
 c3.chambres = 3
 c3.max_people = 3
 c3.price = 250
-c3.user = u3
 c3.save!
 
 c4 = Colloc.new
@@ -104,7 +101,6 @@ c4.size = 50
 c4.chambres = 2
 c4.max_people = 4
 c4.price = 250
-c4.user = u4
 c4.save!
 
 c5 = Colloc.new
@@ -114,7 +110,6 @@ c5.size = 70
 c5.chambres = 3
 c5.max_people = 3
 c5.price = 150
-c5.user = u5
 c5.save!
 
 c6 = Colloc.new
@@ -124,5 +119,25 @@ c6.size = 100
 c6.chambres = 5
 c6.max_people = 10
 c6.price = 250
-c6.user = u6
 c6.save!
+
+u1.add_colloc c1
+u1.save!
+
+u2.add_colloc c2
+u2.save!
+
+u2.add_colloc c2
+u2.save!
+
+u3.add_colloc c3
+u3.save!
+
+u4.add_colloc c4
+u4.save!
+
+u5.add_colloc c5
+u5.save!
+
+u6.add_colloc c6
+u6.save!

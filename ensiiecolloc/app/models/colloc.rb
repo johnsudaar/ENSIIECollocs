@@ -5,18 +5,26 @@ class Colloc < ActiveRecord::Base
   validates :chambres, :numericality => { :greater_than => 0}, presence: true
   validates :max_people, :numericality => { :grater_than => 1}, presence: true
   validates :price, :numericality => {:greater_than_or_equal_to =>0 }, presence: true
-  validates :user_id, presence:true
-  validates_uniqueness_of :user_id
-  belongs_to :user
+  has_many :users
   geocoded_by :adresse
   after_validation :geocode
   has_many :pictures, dependent: :destroy
 
-  def belongs_to user
-    if self.user == user
-      return true
-    else
-      return false
+  def admin
+    return self.users.where({:c_admin => true})[0]
+  end
+
+  def full
+    return self.users.where({:accepted => true}).length >= self.max_people
+  end
+
+  def destroy
+    self.users.each do |u|
+      u.colloc = nil
+      u.accepted = false
+      u.c_admin = false
+      u.save
     end
+    super
   end
 end

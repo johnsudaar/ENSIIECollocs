@@ -1,5 +1,5 @@
 class CollocsController < ApplicationController
-  before_action :set_colloc, only: [:show, :edit, :update, :destroy, :addpic, :delpic]
+  before_action :set_colloc, only: [:show, :edit, :update, :destroy, :addpic, :delpic, :join, :accept, :leave]
   before_action :authenticate_user!
 
   # GET /collocs
@@ -24,14 +24,31 @@ class CollocsController < ApplicationController
 
   # GET /collocs/1/edit
   def edit
-    if @colloc.user != current_user
+    if @colloc.admin != current_user
       flash[:error] = "Collocation introuvable"
       redirect_to root_path
     end
   end
 
+  def join
+    if current_user.colloc.nil?
+      if ! @colloc.full
+        current_user.colloc = @colloc
+        current_user.accepted = false
+        current_user.save
+        flash[:notice] = "Votre demande à été envoyée"
+      else
+        flash[:error] = "La collocation est déjà pleine"
+      end
+      redirect_to @colloc
+    else
+      flash[:error] =  "Vous avez déjà une colocation"
+      redirect_to root_path
+    end
+  end
+
   def addpic
-    if @colloc.user == current_user
+    if @colloc.admin == current_user
       pic = Picture.new
       up = PictureUploader.new
       up.store!(params[:file])
@@ -49,7 +66,7 @@ class CollocsController < ApplicationController
     if Picture.find params[:pic]
       pic = Picture.find params[:pic]
       if pic.colloc.id == @colloc.id
-        if @colloc.user == current_user
+        if @colloc.admin == current_user
           pic.delete
           render :json => {success:true, message:"Image supprimée",picture: params[:pic]}
         else
@@ -67,10 +84,11 @@ class CollocsController < ApplicationController
   # POST /collocs.json
   def create
     @colloc = Colloc.new(colloc_params)
-    @colloc.user_id = current_user.id
-
+    current_user.colloc = @colloc
+    current_user.c_admin = true
+    current_user.accepted = true
     respond_to do |format|
-      if @colloc.save
+      if @colloc.save and current_user.save
         format.html { redirect_to @colloc, notice: 'La collocation à été ajoutée' }
         format.json { render :show, status: :created, location: @colloc }
       else
@@ -83,7 +101,7 @@ class CollocsController < ApplicationController
   # PATCH/PUT /collocs/1
   # PATCH/PUT /collocs/1.json
   def update
-    if @colloc.user == current_user
+    if @colloc.admin == current_user
       respond_to do |format|
         if @colloc.update(colloc_params)
           format.html { redirect_to @colloc, notice: 'La collocation à été mise a jour.' }
@@ -102,7 +120,7 @@ class CollocsController < ApplicationController
   # DELETE /collocs/1
   # DELETE /collocs/1.json
   def destroy
-    if @colloc.user == current_user
+    if @colloc.admin == current_user
       @colloc.destroy
       respond_to do |format|
         format.html { redirect_to collocs_url, notice: 'Colloc was successfully destroyed.' }
@@ -110,6 +128,49 @@ class CollocsController < ApplicationController
       end
     else
       flash[:error] = "Collocation introuvable"
+      redirect_to root_path
+    end
+  end
+
+  def accept
+    if current_user.can_admin(@colloc)
+      u = User.find(params[:user])
+      if ! @colloc.full
+        if u.colloc == @colloc
+          if ! u.accepted
+            u.accepted =  true
+            u.save
+            flash[:notice] = u.name+" "+u.surname+" a été accépté"
+          else
+            flash[:error] = "L'utilisateur fait déjà parti de cette collocation"
+          end
+        else
+          flash[:error] = "L'utilisateur ne fait pas parti de cette collocation"
+        end
+      else
+        flash[:error] = "La collocation est déjà remplie"
+      end
+      redirect_to edit_colloc_path(@colloc)
+    else
+      flash[:error] = "Vous ne pouvez pas administrer cette collocation"
+      redirect_to root_path
+    end
+  end
+
+  def leave
+    if current_user.can_admin(@colloc)
+      u = User.find(params[:user])
+      if u.colloc == @colloc
+        u.colloc = nil
+        u.accepted =  false
+        u.save
+        flash[:notice] = u.name+" "+u.surname+" a été renvoyé"
+      else
+        flash[:error] = "L'utilisateur ne fait pas parti de cette collocation"
+      end
+      redirect_to edit_colloc_path(@colloc)
+    else
+      flash[:error] = "Vous ne pouvez pas administrer cette collocation"
       redirect_to root_path
     end
   end

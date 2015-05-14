@@ -11,7 +11,7 @@
       = f.text_field :surname, label: 'Nom'
   .row
     .field.small-12.large-6.columns
-      = f.number_field :promo, in:1980..2020, step:1, label: 'Promotion'
+      = f.number_field :promo, in:2000..Time.now.year+3, step:1, label: 'Promotion'
     .field.small-12.large-6.columns
       = f.telephone_field :phone, label: 'Téléphone'
   .row

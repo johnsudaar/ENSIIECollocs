@@ -235,11 +235,11 @@ function generateSingleResultHTML(location){
   final += "<ul class=\"pricing-table\">"
     final += "<div data-equalizer-watch>";
       final += "<li class=\"title\">"+location.name+"</li>";
-      final += "<li class=\"price\">"+location.price+"</li>";
+      final += "<li class=\"price\">"+location.price+" €/mois</li>";
       final += "<li class=\"description\">"+location.add+"</li>";
-      final += "<li class=\"bullet-item\">"+location.size+"</li>";
-      final += "<li class=\"bullet-item\">"+location.chambres+"</li>";
-      final += "<li class=\"bullet-item\"> Pour "+location.chambres+"</li>";
+      final += "<li class=\"bullet-item\">"+location.size+" m²</li>";
+      final += "<li class=\"bullet-item\">"+location.chambres+" chambres</li>";
+      final += "<li class=\"bullet-item\"> Pour "+location.max_people+" personnes max</li>";
     final += "</div>";
     final += "<li class=\"cta-button\">";
       final += "<a href=\""+location.path+"\" class=\"button white-text floor\"> Voir </a>";

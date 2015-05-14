@@ -7,8 +7,32 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :surname, presence: true
   validates :phone, presence:true
-  validates :promo, presence:true
-  has_one :colloc
+  validates :promo, :numericality => {:less_than_or_equal_to =>Time.now.year + 3 }, presence: true
+
+
+  belongs_to :colloc
+
+  def can_admin colloc
+    if self.colloc.id == colloc.id and self.c_admin
+      return true
+    else
+      return false
+    end
+  end
+
+  def destroy
+    if self.c_admin
+      self.colloc.destroy
+    end
+    super
+  end
+
+  def add_colloc colloc
+    self.colloc = colloc
+    self.c_admin = true
+    self.accepted = true
+    self.save
+  end
 
   def active_for_authentication?
     super && approved?

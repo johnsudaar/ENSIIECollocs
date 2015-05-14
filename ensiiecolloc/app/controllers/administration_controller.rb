@@ -2,7 +2,7 @@ class AdministrationController < ApplicationController
   before_action :require_admin
 
   def users
-    @users = User.paginate(:page => params[:page], :per_page => 30)
+    @users = User.order(:approved).paginate(:page => params[:page], :per_page => 30)
   end
 
   def setadmin

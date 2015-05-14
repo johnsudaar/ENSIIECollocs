@@ -25,15 +25,18 @@
           %ul.right
             - if user_signed_in?
               %li{:class => ("active" unless ! current_page?(collocs_path))}
-                = link_to "Liste des coloc", collocs_path
+                = link_to "Liste des colloc", collocs_path
               %li{:class => ("active" unless ! current_page?(collocs_search_path))}
                 = link_to "Rechercher", collocs_search_path
               - if current_user.colloc.nil?
                 %li{:class => ("active" unless ! current_page?(new_colloc_path))}
-                  = link_to "Créer une coloc", new_colloc_path
+                  = link_to "Créer une colloc", new_colloc_path
               -else
                 %li{:class => ("active" unless !current_page?(colloc_path(current_user.colloc.id)))}
-                  = link_to "Gérer ma coloc",colloc_path(current_user.colloc.id)
+                  - if current_user.c_admin
+                    = link_to "Gérer ma colloc",colloc_path(current_user.colloc)
+                  - else
+                    = link_to "Voir ma colloc", colloc_path(current_user.colloc)
               - if current_user.admin?
                 %li{:class => ("active" unless ! current_page?(administration_users_path))}
                   = link_to "Administration", administration_users_path
