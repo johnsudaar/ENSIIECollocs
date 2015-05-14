@@ -36,6 +36,7 @@ class CollocsController < ApplicationController
         current_user.colloc = @colloc
         current_user.accepted = false
         current_user.save
+        CollocMailer.new_colloc_request(current_user,@colloc).deliver_now
         flash[:notice] = "Votre demande à été envoyée"
       else
         flash[:error] = "La collocation est déjà pleine"
@@ -140,6 +141,7 @@ class CollocsController < ApplicationController
           if ! u.accepted
             u.accepted =  true
             u.save
+            CollocMailer.accepted_to_colloc(u,@colloc).deliver_now
             flash[:notice] = u.name+" "+u.surname+" a été accépté"
           else
             flash[:error] = "L'utilisateur fait déjà parti de cette collocation"
@@ -184,6 +186,7 @@ class CollocsController < ApplicationController
             u.colloc = @colloc
             u.accepted = true
             u.save
+            CollocMailer.added_to_colloc(u,@colloc).deliver_now
             flash[:notice] = u.name+" "+u.surname+" a été ajouté a la collocation"
           else
             flash[:error] = "La collocation est déjà pleine"
