@@ -39,6 +39,7 @@ gem 'nouislider-rails'
 gem "select2-rails"
 gem 'email_validator'
 gem 'mailgun_rails'
+gem "rails_12factor"
 
 
 # Use ActiveModel has_secure_password
