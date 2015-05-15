@@ -76,4 +76,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.default_url_options = { :host => 'colloc.scalingo.io' }
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+          api_key: 'key-bbcbb45d6e83baa6b46e0579576dba77',
+          domain: 'sandboxb2077991547f4fde8252b9c30490d134.mailgun.org'
+  }
 end
