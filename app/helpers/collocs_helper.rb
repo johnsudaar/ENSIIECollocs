@@ -1,0 +1,2 @@
+module CollocsHelper
+end

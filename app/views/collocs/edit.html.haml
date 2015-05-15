@@ -1,0 +1,55 @@
+%h1 Gestion de ma colloc
+
+.panel
+  %h2 Gestion des membres
+  %table.full-width.responsive
+    %thead
+      %tr
+        %th.center-text E-mail
+        %th.center-text Nom
+        %th.center-text Prénom
+        %th.center-text Accepter
+        %th.center-text Renvoyer
+    %tbody
+      - @colloc.users.order(:accepted).each do |user|
+        %tr
+          %td.center-text #{user.email}
+          %td.center-text #{user.surname}
+          %td.center-text #{user.name}
+          %td.center-text
+            - if ! user.accepted
+              = link_to "Accepter", colloc_accept_path(@colloc,user),{:class=> "no-margin button tiny success expand"}
+          %td.center-text
+            -if ! user.c_admin
+              = link_to "Renvoyer", colloc_leave_path(@colloc,user),{:class => "no-margin button tiny alert expand"}
+  %h2 Ajouter un membre
+  = form_tag colloc_add_email_path do
+    .row
+      .small-12.medium-10.columns
+        = hidden_field_tag :email,"",:id => "email-autocomplete", :style => "width:100%;"
+      .small-12.medium-2.columns
+        = submit_tag "Ajouter", :class => "tiny button success no-margins expand"
+
+- @modification=true
+.panel
+  %h2 Infomations
+  = render 'form'
+
+.panel
+  %h2 Ajouter une photo
+  %form#ajoutPhoto.dropzone{:action => colloc_pic_add_path(@colloc), :enctype => "multipart/form-data"}
+    %input{:name => "authenticity_token", :type => "hidden", :value => form_authenticity_token}/
+    .fallback
+      %input{:multiple => "", :name => "media", :type => "file"}
+- if @colloc.pictures.length > 0
+  .panel
+    %h2 Supprimer une photo
+    .small-block-grid-2.medium-block-grid-4
+      - @colloc.pictures.each do | picture |
+        %li.delpic{:id => picture.id}
+          %img.th{:src => picture.thumb}
+          .button.alert.expand.button-delete{"picture-delete-url" => colloc_pic_del_path(@colloc,picture.id)} Supprimer
+= link_to 'Retour', @colloc
+
+:javascript
+  autocomplete_email_url = "#{json_user_search_path}"

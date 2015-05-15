@@ -1,0 +1,40 @@
+%h2 Créer un compte
+= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  - if resource.errors.any?
+    - resource.errors.full_messages.each do |msg|
+      :javascript
+        toastr.error("#{msg}");
+  .row
+    .field.small-12.large-6.columns
+      = f.text_field :name, label: 'Prénom'
+    .field.small-12.large-6.columns
+      = f.text_field :surname, label: 'Nom'
+  .row
+    .field.small-12.large-6.columns
+      = f.number_field :promo, in:2000..Time.now.year+3, step:1, label: 'Promotion'
+    .field.small-12.large-6.columns
+      = f.telephone_field :phone, label: 'Téléphone'
+  .row
+    .field.columns
+      - if @c_email.nil?
+        = f.email_field :email, label: 'E-mail'
+      - else
+        = f.email_field :email, value: @c_email, label: 'E-mail'
+  .row
+    .field.small-12.large-6.columns#add-pass-validation
+      = f.password_field :password, autocomplete: "off", label: 'Mot de passe'
+      - if @validatable
+        %em
+          (#{@minimum_password_length} characters minimum)
+        %br/
+    .field.small-12.large-6.columns
+      = f.password_field :password_confirmation, autocomplete: "off", label: 'Confirmation de mot de passe'
+      %br/
+  .actions.row
+    .columns.center-text
+      = f.submit "S'inscrire"
+  :javascript
+    $("#add-pass-validation").find("#user_password").pwstrength({
+      minChar:8,
+    });
+/= render "devise/shared/links"

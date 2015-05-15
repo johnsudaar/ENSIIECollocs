@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  colloc_id: 1
+  path: MyString
+  thumb: MyString
+
+two:
+  colloc_id: 1
+  path: MyString
+  thumb: MyString

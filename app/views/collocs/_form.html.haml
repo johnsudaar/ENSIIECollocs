@@ -1,0 +1,39 @@
+= form_for @colloc do |f|
+  - if @colloc.errors.any?
+    - @colloc.errors.full_messages.each do |msg|
+      :javascript
+        toastr.error("#{msg}");
+  .form_colloc
+    .row
+      .small-12.large-6.columns
+        = f.text_field :titre
+      .small-12.large-6.columns
+        = f.text_field :adresse
+    .row
+      .small-12.large-6.columns
+        .row.collapse
+          %label Superficie
+          .small-9.columns
+            = f.text_field :size, label: false
+          .small-3.columns
+            %span.postfix m²
+      .small-12.large-6.columns
+        = f.number_field :chambres, label: 'Nombre de chambres'
+    .row
+      .small-12.large-6.columns
+        = f.number_field :max_people, label: 'Nombre maximum de collocataires'
+      .small-12.large-6.columns
+        .row.collapse
+          %label Prix
+          .small-9.columns
+            = f.text_field :price, label: false
+          .small-3.columns
+            %span.postfix €
+    .row
+      .small-12.columns
+        =f.text_area :description, :size => "50x5"
+    .row.center-text
+      -if @modification
+        = f.submit "Mettre a jour"
+      -else
+        =f.submit "Créer une collocation"

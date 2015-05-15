@@ -1,0 +1,69 @@
+!!!
+%html
+  %head
+    %title ENSIIE Colloc
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'http://maps.googleapis.com/maps/api/js?libraries=places,geometry&sensor=false'
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+    :javascript
+      login_post_url = "#{json_login_path}";
+      home_url = "#{root_path}";
+  %body{"data-stellar-background-ratio"=>"0.2"}
+    .sticky
+      %nav.top-bar{"data-topbar" => "", :role => "navigation", "data-options"=>"sticky_on: [medium,large]"}
+        %ul.title-area
+          %li.name
+            = link_to root_path, {class:"menu-title-link"} do
+              %img#logo-ensiie{:href => "#", :src => asset_path("ensiie.png")}
+              %h1.menu-title ENSIIE'Colloc
+          %li.toggle-topbar.menu-icon
+            %a{:href => "#"}
+              %span Menu
+        %section.top-bar-section
+          %ul.right
+            - if user_signed_in?
+              %li{:class => ("active" unless ! current_page?(collocs_path))}
+                = link_to "Liste des colloc", collocs_path
+              %li{:class => ("active" unless ! current_page?(collocs_search_path))}
+                = link_to "Rechercher", collocs_search_path
+              - if current_user.colloc.nil?
+                %li{:class => ("active" unless ! current_page?(new_colloc_path))}
+                  = link_to "Créer une colloc", new_colloc_path
+              -else
+                %li{:class => ("active" unless !current_page?(colloc_path(current_user.colloc.id)))}
+                  - if current_user.c_admin
+                    = link_to "Gérer ma colloc",colloc_path(current_user.colloc)
+                  - else
+                    = link_to "Voir ma colloc", colloc_path(current_user.colloc)
+              - if current_user.admin?
+                %li{:class => ("active" unless ! current_page?(administration_users_path))}
+                  = link_to "Administration", administration_users_path
+              %li{:class => ("active" unless ! current_page?(edit_user_registration_path(current_user)))}
+                = link_to "Profil", edit_user_registration_path(current_user)
+              %li
+                = link_to "Deconnexion", destroy_user_session_path, method: :delete
+            - else
+              %li{:class => ("active" unless ! current_page?(new_user_registration_path))}
+                = link_to "S'inscrire", new_user_registration_path
+              %li.show-for-large-up
+                %a.login-dropdown-button Connexion
+                #login_drop_down.f-dropdown.content.small{"data-dropdown-content" => "", :tabindex => "-1"}
+                  = render :template => "devise/sessions/new"
+              %li.hide-for-large-up{:class => ("active" unless ! current_page?(new_user_session_path))}
+                = link_to "Connexion", new_user_session_path
+    .container
+      %div
+        / ---------------------------------------------------------------------------------------------------------------------------------
+        = yield
+        / ---------------------------------------------------------------------------------------------------------------------------------
+      %section.tldr
+        %footer.footer.text-center
+          %small.text-muted © Site créé par Ara et Johnsudaar
+      - if flash[:notice]
+        :javascript
+          toastr.success("#{flash[:notice]}")
+      - if flash[:error]
+        :javascript
+          toastr.error("#{flash[:error]}")

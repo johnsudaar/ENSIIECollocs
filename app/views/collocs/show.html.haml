@@ -1,0 +1,61 @@
+.clearfix
+  %h1.left
+    #{@colloc.titre}
+    %small Par #{@colloc.admin.name} #{@colloc.admin.surname}
+  - if @colloc.admin == current_user
+    = link_to 'Modifier', edit_colloc_path(@colloc), {:class => "button but-margins-reduced right"}
+  - if current_user.colloc.nil? and ! @colloc.full
+    = link_to 'Rejoindre', colloc_join_path(@colloc), {:class => "button but-margins-reduced right"}
+.row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
+  .columns.small-12.medium-6
+    %ul.pricing-table{"data-equalizer-watch" => ""}
+      %li.title #{@colloc.titre}
+      %li.price #{@colloc.price} €/mois
+      %li.bullet-item #{@colloc.adresse}
+      %li.bullet-item #{@colloc.size} m²
+      %li.bullet-item #{@colloc.chambres} chambres
+      %li.bullet-item Pour #{@colloc.max_people} personnes max
+  .columns.small-12.medium-6#google-map{"data-equalizer-watch" => ""}
+
+.infos
+  .row{"data-equalize" => "", "data-equalizer-mq"=>"medium-up"}
+    - if ! (@colloc.description.nil? or @colloc.description == "")
+      .panel.panel-center.small-12.medium-6.columns
+        %h1 Description
+        %p
+          = @colloc.description
+    .panel.small-12.columns{"data-equalizer-watch" => "", :class => ("medium-5 panel-center" unless ((@colloc.description.nil? or @colloc.description == "")))}
+      %h1 Membres
+      %ul
+      - @colloc.users.where({:accepted => true}).each do |u|
+        - if current_user.colloc.id == @colloc.id
+          %li #{u.surname} #{u.name} (Tel : #{u.phone}, email : #{u.email})
+        - else
+          %li #{u.surname} #{u.name}
+
+
+  - if @colloc.pictures.length > 0
+    .panel.gal-panel
+      %h1 Photos
+      .gallery
+        %ul.clearing-thumbs.small-block-grid-2.medium-block-grid-4{"data-clearing" => ""}
+          - @colloc.pictures.each do |picture|
+            %li
+              %a.th{:href => "#{picture.path}"}
+                %img{:src => "#{picture.thumb}"}
+
+:javascript
+  locations = Array();
+  loc = Object();
+  loc.id = #{@colloc.id};
+  loc.lat = #{@colloc.latitude};
+  loc.long = #{@colloc.longitude};
+  loc.price = #{@colloc.price};
+  loc.max_people = #{@colloc.max_people};
+  loc.name = "#{@colloc.titre}";
+  loc.path = "#{colloc_path(@colloc.id)}"
+  locations.push(loc);
+  $(function(){
+    initMap();
+    placeAllPoints();
+  });
