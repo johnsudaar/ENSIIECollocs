@@ -3,7 +3,7 @@ class Colloc < ActiveRecord::Base
   validates :adresse, presence: true
   validates :size, :numericality => { :greater_than => 0}, presence: true
   validates :chambres, :numericality => { :greater_than => 0}, presence: true
-  validates :max_people, :numericality => { :grater_than => 1}, presence: true
+  validates :max_people, :numericality => { :greater_than => 1}, presence: true
   validates :price, :numericality => {:greater_than_or_equal_to =>0 }, presence: true
   has_many :users
   geocoded_by :adresse
