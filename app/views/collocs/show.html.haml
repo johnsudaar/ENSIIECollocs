@@ -28,7 +28,7 @@
       %h1 Membres
       %ul
       - @colloc.users.where({:accepted => true}).each do |u|
-        - if  (! current_user.colloc.nil?) and  current_user.colloc.id == @colloc.id
+        - if  (! current_user.colloc.nil?) and current_user.accepted and  current_user.colloc.id == @colloc.id
           %li #{u.surname} #{u.name} (Tel : #{u.phone}, email : #{u.email})
         - else
           %li #{u.surname} #{u.name}
