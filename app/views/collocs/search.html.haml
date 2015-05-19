@@ -33,8 +33,14 @@
         Dans un rayon de
         %span#dist-slider
         km
-      Autour de :
-      %input#start_point{"type"=>"text"}
+      .row.collapse
+        %label
+          Autour de :
+        .small-10.columns
+          %input#start_point{"type"=>"text"}
+        .small-2.columns
+          .postfix.button
+            .fi-compass.medium#my-location
 
 %h1 Résultats
 #search-results

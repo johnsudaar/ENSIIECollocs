@@ -5,6 +5,7 @@
 
 
 $(function(){
+  geocoder = new google.maps.Geocoder();
   new google.maps.places.Autocomplete($("#colloc_adresse")[0]);
   if (typeof autocomplete_email_url !== 'undefined'){
     $("#email-autocomplete").select2({
@@ -39,6 +40,28 @@ $(function(){
       minimumInputLength: 1
     });
   }
+  $("#my-location").click(function(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(data){
+        position = data.coords;
+        geocoder.geocode({'latLng': new google.maps.LatLng(position.latitude,position.longitude)}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              $("#start_point").val(results[1].formatted_address);
+              refreshData();
+            } else {
+              toastr.error("Impossible de vous geolocaliser");
+            }
+          } else {
+            console.log("Geolocalistion failed : "+status);
+            toastr.error("Impossible de vous geolocaliser");
+          }
+        });
+      });
+    }else{
+      toastr.error("Cette fonctionnalitée n'est pas prise en charge par votre navigateur.");
+    }
+  });
 });
 
 function placeAllPoints(){
@@ -51,6 +74,9 @@ function initMap(){
   var bounds = new google.maps.LatLngBounds();
   for(i=0; i<locations.length; i++) {
     bounds.extend(new google.maps.LatLng(locations[i].lat,locations[i].long));
+  }
+  if(locations.length == 0){
+    bounds.extend(new google.maps.LatLng(48.5839200,7.7455300));
   }
 
   var center = bounds.getCenter();
@@ -183,11 +209,21 @@ function setupSearchUI(price_min,price_max,size_min,size_max,people_min,people_m
 }
 
 function refreshData(){
+  geocoder.geocode( { 'address': $("#start_point").val()}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      _refreshData(results[0]);
+    } else {
+      //toastr.error("Adresse invalide")
+      _refreshData(false);
+    }
+  });
+}
+
+function _refreshData(center){
   var prices  = $("#price").val();
   var sizes   = $("#size").val();
   var peoples = $("#max_people").val();
   var dist    = $("#dist").val()*1000;
-  var center  = autocomplete_center.getPlace();
   var datas = {min_price: prices[0], max_price: prices[1], min_size: sizes[0], max_size: sizes[1], min_people: peoples[0], max_people: peoples[1]};
   $.get(json_search_url,datas).done(function(data){
     if(data.success){
@@ -232,7 +268,6 @@ function refreshData(){
             center: center_loc,
             radius: dist
           };
-          console.log(dist);
           new google.maps.Circle(circle_dist);
         }
         placeAllPoints();
