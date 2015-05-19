@@ -38,7 +38,7 @@
     .panel.gal-panel
       %h1 Photos
       .gallery
-        %ul.clearing-thumbs.small-block-grid-2.medium-block-grid-4{"data-clearing" => ""}
+        %ul.row.clearing-thumbs{"data-clearing" => ""}
           - @colloc.pictures.each do |picture|
             %li
               %a.th{:href => "#{picture.path}"}
