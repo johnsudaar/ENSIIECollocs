@@ -15,6 +15,12 @@ class CollocsController < ApplicationController
   end
 
   def search
+    @price_min = Colloc.minimum :price
+    @price_max = Colloc.maximum :price
+    @size_min = Colloc.minimum :size
+    @size_max = Colloc.maximum :size
+    @people_min = Colloc.minimum :max_people
+    @people_max = Colloc.maximum :max_people
   end
 
   # GET /collocs/new

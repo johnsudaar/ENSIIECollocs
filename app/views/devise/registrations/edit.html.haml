@@ -1,4 +1,4 @@
-%h2 Modification du profile
+%h2 Modification du profil
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
   - if resource.errors.any?
     - resource.errors.full_messages.each do |msg|
@@ -33,7 +33,7 @@
     .field.small-12.large-12.columns
       %br/
       = f.password_field :current_password, autocomplete: "off", label: 'Ancien mot de passe'
-      %i (merci de le remplire pour confirmer le changement)
+      %i (merci de le remplir pour confirmer le changement)
 
   .actions
     = f.submit "Update"

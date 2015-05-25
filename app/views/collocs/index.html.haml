@@ -1,7 +1,4 @@
 %h1.text-center Liste des collocations
-:javascript
-  locations = Array();
-
 .row#list-collocs
   #google-map.small-12
   .pagination_container.small-12
@@ -22,6 +19,9 @@
               = link_to "Voir", colloc, {:class=> "button white-text floor"}
   .pagination_container.small-12.end.columns
     = will_paginate @collocs, renderer: FoundationPagination::Rails
+
+:javascript
+  locations = Array();
 - @all_collocs.each do |colloc|
   :javascript
     loc = Object();
@@ -33,9 +33,7 @@
     loc.name = "#{colloc.titre}";
     loc.path = "#{colloc_path(colloc.id)}"
     locations.push(loc);
-
-:javascript
-  $(function(){
-    initMap();
-    placeAllPoints();
-  });
+    $(function(){
+      initMap();
+      placeAllPoints();
+    });

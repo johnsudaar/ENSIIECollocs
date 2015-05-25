@@ -40,6 +40,8 @@ gem "select2-rails"
 gem 'email_validator'
 gem 'mailgun_rails'
 gem "rails_12factor"
+gem "fog"
+
 
 
 # Use ActiveModel has_secure_password

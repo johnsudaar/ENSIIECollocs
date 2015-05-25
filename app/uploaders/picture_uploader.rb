@@ -3,12 +3,12 @@
 class PictureUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   process resize_to_fit: [800, 800]
+  storage :fog
+
 
   version :thumb do
     process resize_to_fill: [200,200]
   end
-
-  storage :file
 
   def filename
     @name ||= "#{Time.now.to_i}-#{super}" if original_filename.present? and super.present?

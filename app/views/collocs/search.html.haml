@@ -1,6 +1,4 @@
 %h1 Recherche
-:javascript
-  locations = Array();
 .row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
   #google-map.high.large-6.columns{"data-equalizer-watch" => ""}
   .large-6.columns{"data-equalizer-watch" => ""}
@@ -45,15 +43,11 @@
 %h1 Résultats
 #search-results
 
-
-
 :javascript
+  locations = Array();
   json_search_url="#{json_search_path}"
-
   $(function(){
     initMap();
     placeAllPoints();
   });
-
-:javascript
-  setupSearchUI(#{Colloc.minimum :price},#{Colloc.maximum :price},#{Colloc.minimum :size},#{Colloc.maximum :size},#{Colloc.minimum :max_people},#{Colloc.maximum :max_people});
+  setupSearchUI(#{@price_min},#{@price_max},#{@size_min},#{@size_max},#{@people_min},#{@people_max});
