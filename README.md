@@ -1,6 +1,6 @@
-# ENSIIECollocs
+# ENSIIE'Colloc
 
-ENSIIE Collocs est un site web permettant de proposer ou rechercher une collocation. Ce site web à été réalise dans le cadre d'un projet d'étude à [l'ENSIIE.](http://www.ensiie.fr)
+ENSIIE'Colloc est un site web permettant de proposer ou rechercher une collocation. Ce site web à été réalisé dans le cadre d'un projet d'étude à [l'ENSIIE.](http://www.ensiie.fr)
 
 # Prérequis
 Afin de pouvoir fonctionner, le site web nécessite les ressources suivantes :
@@ -19,7 +19,7 @@ Afin d'installer les dépendance de l'application, il suffit de lancer bundler :
 bundle install
 ```
 
-Il se peut que l'installation échoue en renvoyant un message d'érreur ressemblant à :
+Il se peut que l'installation échoue en renvoyant un message d'erreur ressemblant à :
 > Can't install RMagick 2.13.1. Can't find Magick-config
 
 Il faut installer le packet magick-wand :
@@ -50,13 +50,13 @@ rake db:setup
 
 ## ENJOY !
 
-Voila votre site web est pret il ne reste plus qu'a le lancer avec ;
+Voila votre site web est prêt il ne reste plus qu'à le lancer avec :
 ```
 rails s
 ```
 
 ### Connection
-Par defaut la base de donnée contient 6 utilisateurs et 6 collocations. Pour vous connecter en temps qu'admin, utilisez les identifiants suivants :
+Par défaut la base de donnée contient 6 utilisateurs et 6 collocations. Pour vous connecter en temps qu'admin, utilisez les identifiants suivants :
 ```
 User : admin@admin.adm
 Pass : adminadmin
@@ -66,7 +66,7 @@ La liste des autres utilisateurs est disponible dans le fichier config/db/seeds.
 
 # Divers
 ## Mailgun
-L'envoie de mail est géré par mailgun pour changer ca ou le lier a votre compte, editez le fichier config/environments/development.rb à la ligne 38 :
+L'envoi de mail est géré par mailgun pour le lier à votre compte, éditez le fichier config/environments/development.rb à la ligne 38 :
 ```
 config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 config.action_mailer.delivery_method = :mailgun
@@ -78,9 +78,9 @@ config.action_mailer.mailgun_settings = {
 ```
 
 ## AWS
-En dévelopement le site stock les fichiers en local. En production il utilise Amazon Web Services.
+En dévelopement le site stocke les fichiers en local. En production il utilise Amazon Web Services.
 Pour personnaliser ces paramètres modifiez le fichier config/initializers/carrierwave.rb
 
 # Disclaimer
 
-Site réalisé par Chicois Maxime et Hurter Jonathan pour un projet d'étude au sein de [l'ENSIIE.](http://www.ensiie.fr)
+Site réalisé par CHICOIS Maxime et HURTER Jonathan pour un projet d'étude au sein de [l'ENSIIE.](http://www.ensiie.fr)
