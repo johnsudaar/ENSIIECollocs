@@ -3,7 +3,6 @@
 class PictureUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   process resize_to_fit: [800, 800]
-  storage :fog
 
 
   version :thumb do

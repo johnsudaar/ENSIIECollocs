@@ -7,12 +7,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 u1 = User.new
-u1.name = "Jonathan"
-u1.surname = "HURTER"
+u1.name = "Admin"
+u1.surname = "Admin"
 u1.promo = 2017
 u1.phone = "0123456789"
-u1.email = "test@test.tld"
-u1.password = "john1234"
+u1.email = "admin@admin.adm"
+u1.password = "adminadmin"
 u1.approved = true
 u1.admin = true
 u1.save!
@@ -22,7 +22,7 @@ u2.name = "Maxime"
 u2.surname = "CHICOIS"
 u2.promo = 2017
 u2.phone = "0123456789"
-u2.email = "test2@test2.tld"
+u2.email = "maxime@chicois.fr"
 u2.password = "chicois1234"
 u2.approved = true
 u2.save!
@@ -49,7 +49,7 @@ u4.save!
 
 u5 = User.new
 u5.name = "Damien"
-u5.surname = "THEODORI"
+u5.surname = "TEODORI"
 u5.promo = 2017
 u5.phone = "0123456789"
 u5.email = "dam.tmtc@gmail.com"
@@ -58,8 +58,8 @@ u5.approved = true
 u5.save!
 
 u6 = User.new
-u6.name = "Aurelie"
-u6.surname = "PALLAS"
+u6.name = "Jonathan"
+u6.surname = "HURTER"
 u6.promo = 2017
 u6.phone = "0123456789"
 u6.email = "aur.pal@free.fr"
