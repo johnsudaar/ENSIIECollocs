@@ -1,3 +1,30 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.orbit-container .orbit-slides-container img{
+  max-height: 375px;
+}
+
+.panel.home{
+  margin-bottom: 0rem !important;
+}
+
+
+
+h1.hometext, h2.hometext{
+  text-align: center;
+}
+
+h1.hometext{
+	font-family:Georgia,serif;
+	font-size: 2em;
+	text-transform: uppercase;
+	color: #444;
+	font-weight: bold;
+}
+
+.home{
+  font-size: 1.5rem !important;
+  text-align: center;
+}

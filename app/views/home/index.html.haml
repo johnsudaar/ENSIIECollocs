@@ -1,43 +1,53 @@
-%h1
-  test
+%h1.hometext
+  Avec ENSIIE'Colloc...
+  %br
+  Trouvez la colloc dont vous rêvez !
 
-%ul.example-orbit{"data-orbit" => ""}
-  %li
-    .row
-      .medium-4.columns
-        %br
-        SALUT
-      .medium-8.columns 
-        %img{:alt => "slide 3", :src => "/map.png"}
-    .orbit-caption
-      Test1
-  %li.active
-    %ul.small-block-grid-2
-      %li
-        %br
-        CC
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et nisl a arcu maximus convallis in blandit sapien. Aliquam auctor nisl vel pharetra sollicitudin. Duis finibus ornare orci, id viverra neque hendrerit vel. Morbi ornare ipsum quis mattis consectetur.
-      %li
-        %img{:alt => "slide 3", :src => "/map.png"}
-    .orbit-caption
-      Test2
-  %li
-    .row.picture-container
-      %img.picture-adapt-width{:alt => "slide 3", :src => "/map.png"}
-    .orbit-caption.show-for-medium-up
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et nisl a arcu maximus convallis in blandit sapien. Aliquam auctor nisl vel pharetra sollicitudin. Duis finibus ornare orci, id viverra neque hendrerit vel. Morbi ornare ipsum quis mattis consectetur.
-%h1 cc
-.row.medium-uncollapse.large-collapse
-  .small-6.columns
-    Removes gutter at large media query
-  .small-6.columns
-    %img{:alt => "slide 3", :src => "/map.png"}
+.row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
+  .panel.small-12.medium-5.columns.home{"data-equalizer-watch" => ""}
+    %h2.hometext Présentation du site
+    %p Vous êtes à la recherche d'une collocation ou bien vous cherchez des gens pour vous installer avec vous ? Ce site est fait pour vous.
+    - if user_signed_in?
+      %a.button.round.small.expand{:class => "home", :href => collocs_path}
+        %i.fi-marker
+        Liste des collocs
+    - else
+      %a.button.round.small.expand{:class => "home", :href => new_user_registration_path}
+        %i.fi-marker
+        S'inscrire
+  .small-12.medium-7.columns{"data-equalizer-watch" => ""}
+    .row.picture-container.home
+      %img.picture-adapt-width{:alt => "slide 3", :src => asset_path("liste_colloc.png"), :class => "home",}
+
 %br
 %br
+
+.row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
+  .small-12.medium-7.columns{"data-equalizer-watch" => ""}
+    .row.picture-container.home
+      %img.picture-adapt-width{:alt => "slide 3", :src => asset_path("recherche_colloc.png"), :class => "home"}
+  .panel.small-12.medium-5.columns.home{"data-equalizer-watch" => ""}
+    %h2.hometext Rechercher
+    %p Besoin d'une collocation près de votre école ou lieu de travail ? Cherchez la colloc' de vos rêves grâce à notre fonction Rechercher !
+    %a.button.round.small.expand{:class => "home", :href => collocs_search_path}
+      %i.fi-results-demographics
+      Rechercher une colloc
+
 %br
-%ul.small-block-grid-2
-  %li
-    Salut
-  %li
-    %img{:alt => "slide 3", :src => "/map.png"}
-=link_to 'out', destroy_user_session_path, method: :delete
+%br
+
+.row{"data-equalizer" => "", "data-equalizer-mq"=>"medium-up"}
+  .panel.small-12.medium-5.columns.home{"data-equalizer-watch" => ""}
+    %h2.hometext Personnalisez votre page perso
+    %p Présentez votre collocation sur votre page dédiée à votre collocation : gérez vos membres, ajoutez des photos, ...
+    - if user_signed_in? and ! current_user.colloc.nil?
+      %a.button.round.small.expand{:class => "home", :href => colloc_path(current_user.colloc)}
+        %i.fi-home
+        Page perso
+    - else
+      %a.button.round.small.expand{:class => "home", :href => new_colloc_path}
+        %i.fi-home
+        Créer une collocation
+  .small-12.medium-7.columns{"data-equalizer-watch" => ""}
+    .row.picture-container.home
+      %img.picture-adapt-width{:alt => "slide 3", :src => asset_path("page_perso2.png"), :class => "home",}
