@@ -74,7 +74,6 @@ config.action_mailer.mailgun_settings = {
         api_key: 'key-bbcbb45d6e83baa6b46e0579576dba77',
         domain: 'sandboxb2077991547f4fde8252b9c30490d134.mailgun.org'
 }
-
 ```
 
 ## AWS
