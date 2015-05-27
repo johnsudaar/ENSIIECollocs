@@ -42,7 +42,7 @@ u4.name = "Pauline"
 u4.surname = "KOBERSI"
 u4.promo = 2017
 u4.phone = "0123456789"
-u4.email = "p@k.fr"
+u4.email = "pauline@kobersi.fr"
 u4.password = "azertyuiop"
 u4.approved = true
 u4.save!
@@ -52,7 +52,7 @@ u5.name = "Damien"
 u5.surname = "TEODORI"
 u5.promo = 2017
 u5.phone = "0123456789"
-u5.email = "dam.tmtc@gmail.com"
+u5.email = "damien.teodori@gmail.com"
 u5.password = "azertyuiop"
 u5.approved = true
 u5.save!
@@ -62,13 +62,13 @@ u6.name = "Jonathan"
 u6.surname = "HURTER"
 u6.promo = 2017
 u6.phone = "0123456789"
-u6.email = "aur.pal@free.fr"
+u6.email = "jonathan@hurter.fr"
 u6.password = "azertyuiop"
 u6.approved = true
 u6.save!
 
 c1 = Colloc.new
-c1.titre = "Colloc de john"
+c1.titre = "Colloc d'iiens"
 c1.adresse = "2 rue des juifs Strasbourg"
 c1.size = 200
 c1.chambres = 2
@@ -77,7 +77,7 @@ c1.price = 250
 c1.save!
 
 c2 = Colloc.new
-c2.titre = "Geek Colloc"
+c2.titre = "Stras'Colloc"
 c2.adresse = "1 quai saint nicolas Strasbourg"
 c2.size = 400
 c2.chambres = 4
@@ -86,7 +86,7 @@ c2.price = 600
 c2.save!
 
 c3 = Colloc.new
-c3.titre = "La future collocation de tes reves que tu de demande pourquoi tu y es pas encore"
+c3.titre = "Dat Colloc"
 c3.adresse = "50 Avenue de la foret noire Strasbourg"
 c3.size = 350
 c3.chambres = 3
