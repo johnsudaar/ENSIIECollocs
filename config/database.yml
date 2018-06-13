@@ -25,8 +25,8 @@ default: &default
 development:
   <<: *default
   database: ENSIIEColloc_dev
-  username: ENSIIEColloc
-  password: ENSIIEColloc
+  username: admin
+  password: admin
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
